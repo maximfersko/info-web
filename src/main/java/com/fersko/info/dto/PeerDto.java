@@ -3,7 +3,7 @@ package com.fersko.info.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class PeerDto {
+public class PeerDto implements BaseDto<String> {
 
     private String pkNickname;
 
@@ -20,5 +20,10 @@ public class PeerDto {
     @Override
     public int hashCode() {
         return Objects.hash(pkNickname, birthday);
+    }
+
+    @Override
+    public String getId() {
+        return pkNickname;
     }
 }

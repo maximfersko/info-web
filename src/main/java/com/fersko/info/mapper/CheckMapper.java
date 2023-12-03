@@ -1,4 +1,17 @@
 package com.fersko.info.mapper;
 
-public class CheckMapper {
+import com.fersko.info.dto.CheckDto;
+import com.fersko.info.entity.Check;
+
+public class CheckMapper implements BaseMapper<Check, CheckDto> {
+
+    @Override
+    public CheckDto toDto(Check entity) {
+        return null;
+    }
+
+    @Override
+    public Check toEntity(CheckDto dto) {
+        return null;
+    }
 }

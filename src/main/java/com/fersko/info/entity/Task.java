@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class Task {
+public class Task implements BaseEntity<String> {
     private String pkTitle;
     private Task parentTask;
     private Integer maxXp;
@@ -23,5 +23,10 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(pkTitle, parentTask, maxXp);
+    }
+
+    @Override
+    public String getId() {
+        return pkTitle;
     }
 }

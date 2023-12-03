@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class CheckDto {
+public class CheckDto implements BaseDto<Integer> {
 
     private Integer id;
 

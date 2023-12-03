@@ -3,6 +3,7 @@ package com.fersko.info.service;
 import com.fersko.info.entity.Check;
 import com.fersko.info.repository.ChecksRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CheckService implements BaseService<Check, Integer>{
@@ -32,5 +33,10 @@ public class CheckService implements BaseService<Check, Integer>{
     @Override
     public Check save(Check entity) {
         return checksRepository.save(entity);
+    }
+
+    @Override
+    public List<Check> findByAll() {
+        return checksRepository.findByAll();
     }
 }

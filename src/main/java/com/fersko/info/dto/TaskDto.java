@@ -2,7 +2,7 @@ package com.fersko.info.dto;
 
 import java.util.Objects;
 
-public class TaskDto {
+public class TaskDto implements BaseDto<String> {
     private String pkTitle;
 
     private TaskDto parentTask;
@@ -20,5 +20,10 @@ public class TaskDto {
     @Override
     public int hashCode() {
         return Objects.hash(pkTitle, parentTask, maxXp);
+    }
+
+    @Override
+    public String getId() {
+        return pkTitle;
     }
 }

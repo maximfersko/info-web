@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class Peer {
+public class Peer implements BaseEntity<String> {
     private String pkNickname;
     private LocalDate birthday;
 
@@ -25,5 +25,10 @@ public class Peer {
     @Override
     public int hashCode() {
         return Objects.hash(pkNickname, birthday);
+    }
+
+    @Override
+    public String getId() {
+        return pkNickname;
     }
 }

@@ -1,5 +1,6 @@
 package com.fersko.info.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BaseRepository<T, I> {
@@ -11,4 +12,6 @@ public interface BaseRepository<T, I> {
     boolean delete(I id);
 
     T save(T entity);
+
+    List<T> findByAll();
 }
