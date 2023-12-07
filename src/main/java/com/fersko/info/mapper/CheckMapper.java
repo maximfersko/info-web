@@ -17,8 +17,7 @@ public class CheckMapper implements BaseMapper<Check, CheckDto> {
 
         PeerDto peerDto = peerMapper.toDto(entity.getPeer());
 
-        // Check if the result of getPeer() is not null before accessing its properties
-        String peerPkNickname = (peerDto != null) ? peerDto.getPkNickname() : null;
+        String peerPkNickname = (peerDto != null) ? peerDto.getId() : null;
 
         return new CheckDto(
                 entity.getId(),

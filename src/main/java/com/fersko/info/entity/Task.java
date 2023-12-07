@@ -9,25 +9,19 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Task implements BaseEntity<String> {
 
-    private String pkTitle;
+    private String id;
     private Task parentTask;
     private Integer maxXp;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Task)) return false;
-        Task task = (Task) o;
-        return Objects.equals(pkTitle, task.pkTitle) && Objects.equals(parentTask, task.parentTask) && Objects.equals(maxXp, task.maxXp);
+        if (!(o instanceof Task task)) return false;
+        return Objects.equals(id, task.id) && Objects.equals(parentTask, task.parentTask) && Objects.equals(maxXp, task.maxXp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkTitle, parentTask, maxXp);
-    }
-
-    @Override
-    public String getId() {
-        return pkTitle;
+        return Objects.hash(id, parentTask, maxXp);
     }
 }

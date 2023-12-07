@@ -61,9 +61,9 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void update(Task entity) {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setString(1, entity.getParentTask().getPkTitle());
+            preparedStatement.setString(1, entity.getParentTask().getId());
             preparedStatement.setInt(2, entity.getMaxXp());
-            preparedStatement.setString(3, entity.getPkTitle());
+            preparedStatement.setString(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -86,7 +86,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
             preparedStatement.setString(1, entity.getId());
-            preparedStatement.setString(2, entity.getParentTask().getPkTitle());
+            preparedStatement.setString(2, entity.getParentTask().getId());
             preparedStatement.setInt(3, entity.getMaxXp());
             preparedStatement.executeUpdate();
             return entity;

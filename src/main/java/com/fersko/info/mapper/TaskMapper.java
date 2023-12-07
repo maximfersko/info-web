@@ -25,7 +25,7 @@ public class TaskMapper implements BaseMapper<Task, TaskDto> {
         }
 
         return new Task(
-                dto.getPkTitle(),
+                dto.getId(),
                 toEntity(dto.getParentTask()),
                 dto.getMaxXp()
         );

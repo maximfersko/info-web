@@ -81,8 +81,8 @@ public class CheckRepositoryImpl implements CheckRepository {
     public void update(Check entity) {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setString(1, entity.getPeer().getPkNickname());
-            preparedStatement.setString(2, entity.getTask().getPkTitle());
+            preparedStatement.setString(1, entity.getPeer().getId());
+            preparedStatement.setString(2, entity.getTask().getId());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getDate().atStartOfDay()));
             preparedStatement.setLong(4, entity.getId());
             preparedStatement.executeUpdate();
@@ -106,8 +106,8 @@ public class CheckRepositoryImpl implements CheckRepository {
     public Check save(Check entity) {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, entity.getPeer().getPkNickname());
-            preparedStatement.setString(2, entity.getTask().getPkTitle());
+            preparedStatement.setString(1, entity.getPeer().getId());
+            preparedStatement.setString(2, entity.getTask().getId());
             preparedStatement.setDate(3, Date.valueOf(entity.getDate()));
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {

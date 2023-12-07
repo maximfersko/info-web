@@ -13,6 +13,13 @@ public class Main {
 
     public static void main(String[] args) {
         CheckServiceImpl checkServiceImpl = new CheckServiceImpl(CheckRepositoryImpl.getChecksRepository());
-        System.out.println(checkServiceImpl.save(new CheckDto(8L,new PeerDto("bolek", LocalDate.now()), new TaskDto("CPP2_s21_containers", null, 500),LocalDate.now())));
+        checkServiceImpl.update(
+                new CheckDto(
+                        8L,
+                        new PeerDto("poison", LocalDate.now()),
+                        new TaskDto("CPP2_s21_containers", null, 500),
+                        LocalDate.now()
+                )
+        );
     }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class PeerDto implements BaseDto<String> {
 
-    private String pkNickname;
+    private String id;
     private LocalDate birthday;
 
     public PeerDto() {}
@@ -19,18 +19,12 @@ public class PeerDto implements BaseDto<String> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PeerDto)) return false;
-        PeerDto peerDto = (PeerDto) o;
-        return Objects.equals(pkNickname, peerDto.pkNickname) && Objects.equals(birthday, peerDto.birthday);
+        if (!(o instanceof PeerDto peerDto)) return false;
+        return Objects.equals(id, peerDto.id) && Objects.equals(birthday, peerDto.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkNickname, birthday);
-    }
-
-    @Override
-    public String getId() {
-        return pkNickname;
+        return Objects.hash(id, birthday);
     }
 }

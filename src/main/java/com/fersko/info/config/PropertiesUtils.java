@@ -21,7 +21,9 @@ public final class PropertiesUtils {
     }
 
     public static void loadProperties() throws LoadPropertiesException {
-        try (var stream = PropertiesUtils.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (var stream = PropertiesUtils.class
+                .getClassLoader()
+                .getResourceAsStream("application.properties")) {
             PROPERTIES.load(stream);
         } catch (Exception e) {
             throw new LoadPropertiesException(e);

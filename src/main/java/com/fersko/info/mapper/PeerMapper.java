@@ -11,7 +11,7 @@ public class PeerMapper implements BaseMapper<Peer, PeerDto> {
             return null;
         }
         return new PeerDto(
-                entity.getPkNickname(),
+                entity.getId(),
                 entity.getBirthday()
         );
     }
@@ -22,7 +22,7 @@ public class PeerMapper implements BaseMapper<Peer, PeerDto> {
             return null;
         }
         return new Peer(
-                dto.getPkNickname(),
+                dto.getId(),
                 dto.getBirthday()
         );
     }

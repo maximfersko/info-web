@@ -9,7 +9,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class TaskDto implements BaseDto<String> {
 
-    private String pkTitle;
+    private String id;
     private TaskDto parentTask;
     private Integer maxXp;
 
@@ -18,18 +18,12 @@ public class TaskDto implements BaseDto<String> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TaskDto)) return false;
-        TaskDto taskDto = (TaskDto) o;
-        return Objects.equals(pkTitle, taskDto.pkTitle) && Objects.equals(parentTask, taskDto.parentTask) && Objects.equals(maxXp, taskDto.maxXp);
+        if (!(o instanceof TaskDto taskDto)) return false;
+        return Objects.equals(id, taskDto.id) && Objects.equals(parentTask, taskDto.parentTask) && Objects.equals(maxXp, taskDto.maxXp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkTitle, parentTask, maxXp);
-    }
-
-    @Override
-    public String getId() {
-        return pkTitle;
+        return Objects.hash(id, parentTask, maxXp);
     }
 }
