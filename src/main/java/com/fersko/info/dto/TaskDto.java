@@ -1,13 +1,19 @@
 package com.fersko.info.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.Objects;
 
+@Data
+@AllArgsConstructor
 public class TaskDto implements BaseDto<String> {
+
     private String pkTitle;
-
     private TaskDto parentTask;
-
     private Integer maxXp;
+
+    public TaskDto() {}
 
     @Override
     public boolean equals(Object o) {

@@ -1,29 +1,18 @@
 package com.fersko.info;
 
+import com.fersko.info.dto.CheckDto;
+import com.fersko.info.dto.PeerDto;
+import com.fersko.info.dto.TaskDto;
+import com.fersko.info.repository.impl.CheckRepositoryImpl;
+import com.fersko.info.service.impl.CheckServiceImpl;
 
-
-import com.fersko.info.entity.Check;
-import com.fersko.info.entity.Peer;
-import com.fersko.info.entity.Task;
-import com.fersko.info.repository.ChecksRepository;
-import com.fersko.info.repository.PeerRepository;
-import com.fersko.info.repository.TaskRepository;
-import com.fersko.info.service.CheckService;
-import com.fersko.info.service.PeerService;
-import com.fersko.info.service.TaskService;
-
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        CheckService service = new CheckService(ChecksRepository.getChecksRepository());
-        PeerService peerService = new PeerService(PeerRepository.getPeerRepository());
-        TaskService taskService = new TaskService(TaskRepository.getTaskRepository());
-        System.out.println(taskService.findById("DO1_Linux"));
-//        System.out.println(service.findByAll());
 
 
+    public static void main(String[] args) {
+        CheckServiceImpl checkServiceImpl = new CheckServiceImpl(CheckRepositoryImpl.getChecksRepository());
+        System.out.println(checkServiceImpl.save(new CheckDto(8L,new PeerDto("bolek", LocalDate.now()), new TaskDto("CPP2_s21_containers", null, 500),LocalDate.now())));
     }
 }

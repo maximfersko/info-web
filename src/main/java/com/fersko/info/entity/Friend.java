@@ -7,17 +7,17 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class Friends implements BaseEntity<Integer> {
+public class Friend implements BaseEntity<Long> {
 
-    private Integer id;
+    private Long id;
     private Peer firstPeer;
     private Peer secondPeer;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Friends)) return false;
-        Friends friends = (Friends) o;
+        if (!(o instanceof Friend)) return false;
+        Friend friends = (Friend) o;
         return Objects.equals(id, friends.id) && Objects.equals(firstPeer, friends.firstPeer) && Objects.equals(secondPeer, friends.secondPeer);
     }
 

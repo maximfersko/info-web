@@ -10,8 +10,9 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class Check implements BaseEntity<Integer> {
-    private Integer id;
+public class Check implements BaseEntity<Long> {
+
+    private Long id;
     private Peer peer;
     private Task task;
     private LocalDate date;

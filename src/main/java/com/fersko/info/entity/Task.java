@@ -8,6 +8,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 public class Task implements BaseEntity<String> {
+
     private String pkTitle;
     private Task parentTask;
     private Integer maxXp;

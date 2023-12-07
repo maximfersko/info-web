@@ -10,6 +10,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 public class Peer implements BaseEntity<String> {
+
     private String pkNickname;
     private LocalDate birthday;
 

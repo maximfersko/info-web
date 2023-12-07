@@ -1,18 +1,19 @@
-package com.fersko.info.repository;
+package com.fersko.info.repository.impl;
 
 import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Check;
 import com.fersko.info.entity.Peer;
 import com.fersko.info.entity.Task;
 import com.fersko.info.exceptions.ConnectionBDException;
+import com.fersko.info.repository.CheckRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChecksRepository implements BaseRepository<Check, Integer> {
-    private static ChecksRepository checksRepository;
+public class CheckRepositoryImpl implements CheckRepository {
+    private static CheckRepositoryImpl checkRepositoryImpl;
 
     private static final String DELETE_SQL = """
                 DELETE FROM checks WHERE id = ?
@@ -37,8 +38,8 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
                 JOIN public.peers p ON p.pk_nickname = c.peer
                 JOIN public.tasks t ON t.pk_title = c.task
                 LEFT JOIN public.tasks pt ON t.parent_task = pt.pk_title
-                
             """;
+
     private static final String UPDATE_SQL = """
                 UPDATE checks
                 SET peer = ?,
@@ -52,18 +53,19 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
                 WHERE c.id = ?;
             """;
 
-    public static ChecksRepository getChecksRepository() {
-        if (checksRepository == null) {
-            checksRepository = new ChecksRepository();
+    public static CheckRepositoryImpl getChecksRepository() {
+        if (checkRepositoryImpl == null) {
+            checkRepositoryImpl = new CheckRepositoryImpl();
         }
-        return checksRepository;
+        return checkRepositoryImpl;
     }
 
+
     @Override
-    public Optional<Check> findById(Integer id) {
+    public Optional<Check> findById(Long id) {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Check check = getCheck(resultSet);
@@ -82,7 +84,7 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
             preparedStatement.setString(1, entity.getPeer().getPkNickname());
             preparedStatement.setString(2, entity.getTask().getPkTitle());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getDate().atStartOfDay()));
-            preparedStatement.setInt(4, entity.getId());
+            preparedStatement.setLong(4, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,10 +92,10 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.getConnections();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new ConnectionBDException("connection refused");
@@ -109,7 +111,7 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
             preparedStatement.setDate(3, Date.valueOf(entity.getDate()));
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getInt("id"));
+                entity.setId(resultSet.getLong("id"));
             }
             preparedStatement.executeUpdate();
             return entity;
@@ -152,7 +154,7 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
     }
 
     private Task getParentTask(ResultSet resultSet) throws SQLException {
-        String parentTaskTitle = resultSet.getNString("parent_pk_title");
+        String parentTaskTitle = resultSet.getString("parent_pk_title");
         return (parentTaskTitle != null) ? new Task(
                 parentTaskTitle,
                 null,
@@ -165,7 +167,7 @@ public class ChecksRepository implements BaseRepository<Check, Integer> {
         Task parentTask = getParentTask(resultSet);
         Task currentTask = getTask(resultSet, parentTask);
         return new Check(
-                resultSet.getInt("id"),
+                resultSet.getLong("id"),
                 peer,
                 currentTask,
                 resultSet.getDate("date").toLocalDate()

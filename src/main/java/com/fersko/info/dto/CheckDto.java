@@ -1,6 +1,7 @@
 package com.fersko.info.dto;
 
-import com.fersko.info.entity.Task;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,15 +10,16 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class CheckDto implements BaseDto<Integer> {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CheckDto implements BaseDto<Long> {
 
-    private Integer id;
-
+    private Long id;
     private PeerDto peerDto;
-
     private TaskDto taskDto;
-
     private LocalDate date;
+
+    public CheckDto() {
+    }
 
     @Override
     public boolean equals(Object o) {

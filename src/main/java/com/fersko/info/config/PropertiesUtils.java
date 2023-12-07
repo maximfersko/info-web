@@ -8,11 +8,15 @@ public final class PropertiesUtils {
 
     private static final Properties PROPERTIES = new Properties();
 
+    public PropertiesUtils() {
+
+    }
+
     static {
         try {
             loadProperties();
         } catch (LoadPropertiesException e) {
-            throw new LoadPropertiesException(e);
+            e.printStackTrace();
         }
     }
 
@@ -25,7 +29,7 @@ public final class PropertiesUtils {
     }
 
     public static String get(String key) {
-        return  PROPERTIES.getProperty(key);
+        return PROPERTIES.getProperty(key);
     }
 
 }
