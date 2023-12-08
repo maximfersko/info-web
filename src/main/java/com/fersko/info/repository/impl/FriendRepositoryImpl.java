@@ -116,7 +116,7 @@ public class FriendRepositoryImpl implements FriendRepository {
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Friend> friends = null;
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 friends = new ArrayList<>();
                 while (resultSet.next()) {
                     friends.add(getFriend(resultSet));
@@ -150,6 +150,5 @@ public class FriendRepositoryImpl implements FriendRepository {
                 getSecondPeer(resultSet)
         );
     }
-
 
 }

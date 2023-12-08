@@ -1,10 +1,8 @@
 package com.fersko.info.service.impl;
 
 import com.fersko.info.dto.TaskDto;
-import com.fersko.info.entity.Task;
 import com.fersko.info.mapper.TaskMapper;
 import com.fersko.info.repository.impl.TaskRepositoryImpl;
-import com.fersko.info.service.BaseService;
 import com.fersko.info.service.TaskService;
 
 import java.util.List;

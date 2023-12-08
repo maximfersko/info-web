@@ -1,7 +1,6 @@
 package com.fersko.info.mapper;
 
 import com.fersko.info.dto.CheckDto;
-import com.fersko.info.dto.PeerDto;
 import com.fersko.info.entity.Check;
 
 public class CheckMapper implements BaseMapper<Check, CheckDto> {
@@ -14,10 +13,6 @@ public class CheckMapper implements BaseMapper<Check, CheckDto> {
         if (entity == null) {
             return null;
         }
-
-        PeerDto peerDto = peerMapper.toDto(entity.getPeer());
-
-        String peerPkNickname = (peerDto != null) ? peerDto.getId() : null;
 
         return new CheckDto(
                 entity.getId(),

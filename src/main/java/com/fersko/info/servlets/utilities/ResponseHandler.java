@@ -17,7 +17,7 @@ public class ResponseHandler {
 
     }
 
-    public static <D extends BaseDto, S extends BaseService<D, ?>> void handleGetRequest(HttpServletRequest req, HttpServletResponse resp, S service, ObjectMapper objectMapper) throws IOException {
+    public static <D extends BaseDto<I>, S extends BaseService<D, ?>, I> void handleGetRequest(HttpServletRequest req, HttpServletResponse resp, S service, ObjectMapper objectMapper) throws IOException {
         String[] pathParts = req.getPathInfo().split("/");
         try {
             String entityIdString = pathParts[1];
@@ -32,7 +32,7 @@ public class ResponseHandler {
         }
     }
 
-    public static <D extends BaseDto, S extends BaseService<D, ?>> void handleDeleteRequest(HttpServletRequest req, HttpServletResponse resp, S service) throws IOException {
+    public static <D extends BaseDto<I>, S extends BaseService<D, ?>, I> void handleDeleteRequest(HttpServletRequest req, HttpServletResponse resp, S service) throws IOException {
         String[] pathParts = req.getPathInfo().split("/");
         try {
             String entityIdString = pathParts[1];

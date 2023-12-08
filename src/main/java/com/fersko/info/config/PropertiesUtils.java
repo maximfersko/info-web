@@ -8,7 +8,7 @@ public final class PropertiesUtils {
 
     private static final Properties PROPERTIES = new Properties();
 
-    public PropertiesUtils() {
+    private PropertiesUtils() {
 
     }
 

@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @WebServlet(name = "checkServlet", urlPatterns = "/data/checks/*")

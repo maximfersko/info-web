@@ -1,9 +1,7 @@
 package com.fersko.info.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fersko.info.dto.CheckDto;
 import com.fersko.info.dto.TaskDto;
-import com.fersko.info.entity.Task;
 import com.fersko.info.repository.impl.TaskRepositoryImpl;
 import com.fersko.info.service.TaskService;
 import com.fersko.info.service.impl.TaskServiceImpl;
@@ -16,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @WebServlet(name = "taskServlet", urlPatterns = "/data/tasks/*")

@@ -1,10 +1,8 @@
 package com.fersko.info.service.impl;
 
 import com.fersko.info.dto.PeerDto;
-import com.fersko.info.entity.Peer;
 import com.fersko.info.mapper.PeerMapper;
 import com.fersko.info.repository.impl.PeerRepositoryImpl;
-import com.fersko.info.service.BaseService;
 import com.fersko.info.service.PeerService;
 
 import java.util.List;

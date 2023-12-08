@@ -2,7 +2,6 @@ package com.fersko.info.repository.impl;
 
 import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Task;
-import com.fersko.info.repository.BaseRepository;
 import com.fersko.info.repository.TaskRepository;
 
 
@@ -101,7 +100,7 @@ public class TaskRepositoryImpl implements TaskRepository {
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Task> tasks = null;
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 tasks = new ArrayList<>();
                 while (resultSet.next()) {
                     tasks.add(getTask(resultSet));
@@ -128,7 +127,6 @@ public class TaskRepositoryImpl implements TaskRepository {
                 getParentTask(resultSet),
                 resultSet.getInt("max_xp")
         );
-
     }
 
 }
