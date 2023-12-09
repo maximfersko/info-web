@@ -4,45 +4,42 @@ import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Peer;
 import com.fersko.info.repository.PeerRepository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PeerRepositoryImpl implements PeerRepository {
 
-    private static PeerRepositoryImpl peerRepositoryImpl;
-
     private static final String DELETE_SQL =
             "DELETE FROM peers WHERE pk_nickname = ?";
-
     private static final String SAVE_SQL =
             "INSERT INTO peers (pk_nickname, birthday) VALUES (?, ?)";
-
     private static final String FIND_ALL_SQL =
             "SELECT p.pk_nickname, p.birthday FROM peers p";
-
     private static final String FIND_BY_ID =
             FIND_ALL_SQL + " WHERE pk_nickname = ?";
-
     private static final String UPDATE_SQL =
             "UPDATE peers SET birthday = ? WHERE pk_nickname = ?";
+    private final ConnectionManager connectionManager;
 
 
-    private PeerRepositoryImpl() {
-
+    public PeerRepositoryImpl() {
+        connectionManager = new ConnectionManager();
     }
 
-    public static PeerRepositoryImpl getPeerRepository() {
-        if (peerRepositoryImpl == null) {
-            peerRepositoryImpl = new PeerRepositoryImpl();
-        }
-        return peerRepositoryImpl;
+    public PeerRepositoryImpl(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
 
     @Override
     public Optional<Peer> findById(String id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
             preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -58,7 +55,7 @@ public class PeerRepositoryImpl implements PeerRepository {
 
     @Override
     public void update(Peer entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setDate(1, Date.valueOf(entity.getBirthday()));
             preparedStatement.setString(2, entity.getId());
@@ -70,7 +67,7 @@ public class PeerRepositoryImpl implements PeerRepository {
 
     @Override
     public boolean delete(String id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
             preparedStatement.setString(1, id);
             return preparedStatement.executeUpdate() > 0;
@@ -81,7 +78,7 @@ public class PeerRepositoryImpl implements PeerRepository {
 
     @Override
     public Peer save(Peer entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
             preparedStatement.setString(1, entity.getId());
             preparedStatement.setDate(2, Date.valueOf(entity.getBirthday()));
@@ -94,7 +91,7 @@ public class PeerRepositoryImpl implements PeerRepository {
 
     @Override
     public List<Peer> findByAll() {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Peer> peers = null;

@@ -7,22 +7,25 @@ import com.fersko.info.entity.Task;
 import com.fersko.info.exceptions.ConnectionBDException;
 import com.fersko.info.repository.CheckRepository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CheckRepositoryImpl implements CheckRepository {
-    private static CheckRepositoryImpl checkRepositoryImpl;
 
     private static final String DELETE_SQL = """
                 DELETE FROM checks WHERE id = ?
             """;
-
     private static final String SAVE_SQL = """
                 INSERT INTO checks (peer, task, date) VALUES (?, ?, ?)
             """;
-
     private static final String FIND_ALL_SQL = """
                 SELECT
                     c.id,
@@ -39,7 +42,6 @@ public class CheckRepositoryImpl implements CheckRepository {
                 JOIN public.tasks t ON t.pk_title = c.task
                 LEFT JOIN public.tasks pt ON t.parent_task = pt.pk_title
             """;
-
     private static final String UPDATE_SQL = """
                 UPDATE checks
                 SET peer = ?,
@@ -47,23 +49,22 @@ public class CheckRepositoryImpl implements CheckRepository {
                 date = ?
                 WHERE id = ?;
             """;
-
-
     private static final String FIND_BY_ID_SQL = FIND_ALL_SQL + """
                 WHERE c.id = ?;
             """;
+    private final ConnectionManager connectionManager;
 
-    public static CheckRepositoryImpl getChecksRepository() {
-        if (checkRepositoryImpl == null) {
-            checkRepositoryImpl = new CheckRepositoryImpl();
-        }
-        return checkRepositoryImpl;
+    public CheckRepositoryImpl() {
+        this.connectionManager = new ConnectionManager();
     }
 
+    public CheckRepositoryImpl(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
     @Override
     public Optional<Check> findById(Long id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,7 +80,7 @@ public class CheckRepositoryImpl implements CheckRepository {
 
     @Override
     public void update(Check entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setString(1, entity.getPeer().getId());
             preparedStatement.setString(2, entity.getTask().getId());
@@ -93,7 +94,7 @@ public class CheckRepositoryImpl implements CheckRepository {
 
     @Override
     public boolean delete(Long id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
@@ -104,7 +105,7 @@ public class CheckRepositoryImpl implements CheckRepository {
 
     @Override
     public Check save(Check entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getPeer().getId());
             preparedStatement.setString(2, entity.getTask().getId());
@@ -122,7 +123,7 @@ public class CheckRepositoryImpl implements CheckRepository {
 
     @Override
     public List<Check> findByAll() {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Check> checks = null;

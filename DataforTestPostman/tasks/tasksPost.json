@@ -1,0 +1,9 @@
+{
+  "id": "MLP",
+  "parentTask": {
+    "id": "CPP_matrix",
+    "parentTask": null,
+    "maxXp": 350
+  },
+  "maxXp": 600
+}

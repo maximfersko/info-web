@@ -3,7 +3,6 @@ package com.fersko.info.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fersko.info.dto.PeerDto;
-import com.fersko.info.repository.impl.PeerRepositoryImpl;
 import com.fersko.info.service.PeerService;
 import com.fersko.info.service.impl.PeerServiceImpl;
 import com.fersko.info.servlets.utilities.ResponseHandler;
@@ -12,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +19,14 @@ import java.util.List;
 @WebServlet(name = "peerServlet", urlPatterns = "/data/peers/*")
 public class PeerServlet extends HttpServlet {
 
+    @Setter
     private PeerService peerService;
 
     private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
-        peerService = new PeerServiceImpl(PeerRepositoryImpl.getPeerRepository());
+        peerService = new PeerServiceImpl();
         objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 

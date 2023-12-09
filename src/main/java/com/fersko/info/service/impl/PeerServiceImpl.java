@@ -4,20 +4,22 @@ import com.fersko.info.dto.PeerDto;
 import com.fersko.info.mapper.PeerMapper;
 import com.fersko.info.repository.impl.PeerRepositoryImpl;
 import com.fersko.info.service.PeerService;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class PeerServiceImpl implements PeerService {
 
     private final PeerRepositoryImpl peerRepositoryImpl;
 
-    private final PeerMapper peerMapper = new PeerMapper();
+    private final PeerMapper peerMapper;
 
-    public PeerServiceImpl(PeerRepositoryImpl peerRepositoryImpl) {
-        this.peerRepositoryImpl = peerRepositoryImpl;
+    public PeerServiceImpl() {
+        peerRepositoryImpl = new PeerRepositoryImpl();
+        peerMapper = new PeerMapper();
     }
-
 
     @Override
     public Optional<PeerDto> findById(String id) {

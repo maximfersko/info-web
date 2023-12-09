@@ -1,0 +1,12 @@
+{
+  "peerDto": {
+    "id": "bolek",
+    "birthday": "1990-01-01"
+  },
+  "taskDto": {
+    "id": "CPP2_s21_containers",
+    "parentTask": null,
+    "maxXp": 500
+  },
+  "date": "2023-12-01"
+}

@@ -13,7 +13,6 @@ public class CheckMapper implements BaseMapper<Check, CheckDto> {
         if (entity == null) {
             return null;
         }
-
         return new CheckDto(
                 entity.getId(),
                 peerMapper.toDto(entity.getPeer()),

@@ -4,18 +4,21 @@ import com.fersko.info.dto.FriendDto;
 import com.fersko.info.mapper.FriendMapper;
 import com.fersko.info.repository.impl.FriendRepositoryImpl;
 import com.fersko.info.service.FriendService;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class FriendServiceImpl implements FriendService {
 
     private final FriendRepositoryImpl friendRepositoryImpl;
 
-    private final FriendMapper friendMapper = new FriendMapper();
+    private final FriendMapper friendMapper;
 
-    public FriendServiceImpl(FriendRepositoryImpl friendRepositoryImpl) {
-        this.friendRepositoryImpl = friendRepositoryImpl;
+    public FriendServiceImpl() {
+        friendRepositoryImpl = new FriendRepositoryImpl();
+        friendMapper = new FriendMapper();
     }
 
 

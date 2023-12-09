@@ -2,7 +2,6 @@ package com.fersko.info.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fersko.info.dto.TaskDto;
-import com.fersko.info.repository.impl.TaskRepositoryImpl;
 import com.fersko.info.service.TaskService;
 import com.fersko.info.service.impl.TaskServiceImpl;
 import com.fersko.info.servlets.utilities.ResponseHandler;
@@ -11,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +19,14 @@ import java.util.List;
 @WebServlet(name = "taskServlet", urlPatterns = "/data/tasks/*")
 public class TaskServlet extends HttpServlet {
 
+    @Setter
     private TaskService taskService;
 
     private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
-        taskService = new TaskServiceImpl(TaskRepositoryImpl.getTaskRepository());
+        taskService = new TaskServiceImpl();
         objectMapper = new ObjectMapper();
     }
 

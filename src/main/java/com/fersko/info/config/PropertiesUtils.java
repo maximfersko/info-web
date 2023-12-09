@@ -8,16 +8,16 @@ public final class PropertiesUtils {
 
     private static final Properties PROPERTIES = new Properties();
 
-    private PropertiesUtils() {
-
-    }
-
     static {
         try {
             loadProperties();
         } catch (LoadPropertiesException e) {
             e.printStackTrace();
         }
+    }
+
+    private PropertiesUtils() {
+
     }
 
     public static void loadProperties() throws LoadPropertiesException {

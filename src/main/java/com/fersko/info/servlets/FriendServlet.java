@@ -3,7 +3,6 @@ package com.fersko.info.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fersko.info.dto.FriendDto;
-import com.fersko.info.repository.impl.FriendRepositoryImpl;
 import com.fersko.info.service.FriendService;
 import com.fersko.info.service.impl.FriendServiceImpl;
 import com.fersko.info.servlets.utilities.ResponseHandler;
@@ -12,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,12 +19,13 @@ import java.util.List;
 @WebServlet(name = "friendServlet", urlPatterns = "/data/friends/*")
 public class FriendServlet extends HttpServlet {
 
+    @Setter
     private FriendService friendService;
     private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
-        friendService = new FriendServiceImpl(FriendRepositoryImpl.getFriendsRepository());
+        friendService = new FriendServiceImpl();
         objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 

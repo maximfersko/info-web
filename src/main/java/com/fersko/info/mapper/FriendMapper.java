@@ -10,6 +10,9 @@ public class FriendMapper implements BaseMapper<Friend, FriendDto> {
 
     @Override
     public FriendDto toDto(Friend entity) {
+        if (entity == null) {
+            return null;
+        }
         return new FriendDto(
                 entity.getId(),
                 peerMapper.toDto(entity.getFirstPeer()),
@@ -19,6 +22,9 @@ public class FriendMapper implements BaseMapper<Friend, FriendDto> {
 
     @Override
     public Friend toEntity(FriendDto dto) {
+        if (dto == null) {
+            return null;
+        }
         return new Friend(
                 dto.getId(),
                 peerMapper.toEntity(dto.getFirstPeer()),

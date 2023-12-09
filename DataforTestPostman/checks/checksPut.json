@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "peerDto": {
+    "id": "lolek",
+    "birthday": [
+      1995,
+      4,
+      3
+    ]
+  },
+  "taskDto": {
+    "id": "CPP_matrix",
+    "parentTask": null,
+    "maxXp": 250
+  },
+  "date": [
+    2022,
+    10,
+    19
+  ]
+}

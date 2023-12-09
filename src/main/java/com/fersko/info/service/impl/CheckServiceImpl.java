@@ -4,17 +4,20 @@ import com.fersko.info.dto.CheckDto;
 import com.fersko.info.mapper.CheckMapper;
 import com.fersko.info.repository.impl.CheckRepositoryImpl;
 import com.fersko.info.service.CheckService;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class CheckServiceImpl implements CheckService {
 
+    private final CheckMapper checkMapper;
     private final CheckRepositoryImpl checkRepositoryImpl;
-    private static final CheckMapper checkMapper = new CheckMapper();
 
-    public CheckServiceImpl(CheckRepositoryImpl checkRepositoryImpl) {
-        this.checkRepositoryImpl = checkRepositoryImpl;
+    public CheckServiceImpl() {
+        checkMapper = new CheckMapper();
+        checkRepositoryImpl = new CheckRepositoryImpl();
     }
 
 

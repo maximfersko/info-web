@@ -1,0 +1,9 @@
+{
+  "id": "MLP",
+  "parentTask": {
+    "id": "LinuxNetwork",
+    "parentTask": null,
+    "maxXp": 500
+  },
+  "maxXp": 600
+}

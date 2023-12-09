@@ -1,37 +1,33 @@
 package com.fersko.info.config;
 
-import com.fersko.info.exceptions.ConnectionBDException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public final class ConnectionManager {
-
+public class ConnectionManager {
     private static final String USERNAME_KEY = "db.username";
     private static final String PASSWORD_KEY = "db.password";
     private static final String URL_KEY = "db.url";
     private static final String DRIVER_KEY = "db.driver";
+    private static HikariDataSource hikariDataSource;
 
-    private ConnectionManager() {
+    public static void setup() {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(PropertiesUtils.get(URL_KEY));
+        hikariConfig.setUsername(PropertiesUtils.get(USERNAME_KEY));
+        hikariConfig.setPassword(PropertiesUtils.get(PASSWORD_KEY));
+        hikariConfig.setDriverClassName(PropertiesUtils.get(DRIVER_KEY));
 
+        hikariDataSource = new HikariDataSource(hikariConfig);
     }
 
-    static {
-        try {
-            Class.forName(PropertiesUtils.get(DRIVER_KEY));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    public Connection getConnection() throws SQLException {
+        if (hikariDataSource == null) {
+            setup();
         }
-    }
-
-    public static Connection getConnections() throws SQLException {
-        return DriverManager.getConnection(
-                PropertiesUtils.get(URL_KEY),
-                PropertiesUtils.get(USERNAME_KEY),
-                PropertiesUtils.get(PASSWORD_KEY)
-        );
-
+        return hikariDataSource.getConnection();
     }
 
 }

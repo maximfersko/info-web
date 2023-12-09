@@ -3,7 +3,6 @@ package com.fersko.info.servlets.utilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fersko.info.dto.BaseDto;
 import com.fersko.info.service.BaseService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -57,6 +56,7 @@ public class ResponseHandler {
 
     public static void sendJsonResponse(HttpServletResponse response, Object data, ObjectMapper objectMapper) throws IOException {
         response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
         try (PrintWriter writer = response.getWriter()) {
             objectMapper.writeValue(writer, data);
         } catch (Exception e) {

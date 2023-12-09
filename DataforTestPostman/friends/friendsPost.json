@@ -1,0 +1,18 @@
+{
+  "firstPeer": {
+    "id": "bob",
+    "birthday": [
+      2000,
+      11,
+      26
+    ]
+  },
+  "secondPeer": {
+    "id": "remedy",
+    "birthday": [
+      1994,
+      12,
+      11
+    ]
+  }
+}

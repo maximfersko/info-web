@@ -4,45 +4,43 @@ import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Task;
 import com.fersko.info.repository.TaskRepository;
 
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class TaskRepositoryImpl implements TaskRepository {
 
-    private static TaskRepositoryImpl taskRepositoryImpl;
-
     private static final String DELETE_SQL =
             "DELETE FROM tasks WHERE pk_title = ?";
-
     private static final String SAVE_SQL =
             "INSERT INTO tasks (pk_title, parent_task, max_xp) VALUES (?, ?, ?)";
-
     private static final String FIND_ALL_SQL = """
                     SELECT t.pk_title, t1.pk_title AS parent_task_title, t1.max_xp AS p_task_xp, t.max_xp
                     FROM tasks t
                     LEFT JOIN tasks t1 ON t.parent_task = t1.pk_title
             """;
-
     private static final String FIND_BY_ID_SQL =
             FIND_ALL_SQL + " WHERE t.pk_title = ?";
-
     private static final String UPDATE_SQL =
             "UPDATE tasks SET parent_task = ?, max_xp = ? WHERE pk_title = ?";
+    private final ConnectionManager connectionManager;
 
+    public TaskRepositoryImpl(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
-    public static TaskRepositoryImpl getTaskRepository() {
-        if (taskRepositoryImpl == null) {
-            taskRepositoryImpl = new TaskRepositoryImpl();
-        }
-        return taskRepositoryImpl;
+    public TaskRepositoryImpl() {
+        this.connectionManager = new ConnectionManager();
     }
 
     @Override
     public Optional<Task> findById(String id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -58,7 +56,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void update(Task entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setString(1, entity.getParentTask().getId());
             preparedStatement.setInt(2, entity.getMaxXp());
@@ -71,7 +69,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public boolean delete(String id) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
             preparedStatement.setString(1, id);
             return preparedStatement.executeUpdate() > 0;
@@ -82,7 +80,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task save(Task entity) {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
             preparedStatement.setString(1, entity.getId());
             preparedStatement.setString(2, entity.getParentTask().getId());
@@ -96,7 +94,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> findByAll() {
-        try (Connection connection = ConnectionManager.getConnections();
+        try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Task> tasks = null;

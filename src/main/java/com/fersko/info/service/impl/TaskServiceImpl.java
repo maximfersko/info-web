@@ -4,19 +4,23 @@ import com.fersko.info.dto.TaskDto;
 import com.fersko.info.mapper.TaskMapper;
 import com.fersko.info.repository.impl.TaskRepositoryImpl;
 import com.fersko.info.service.TaskService;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepositoryImpl taskRepositoryImpl;
 
-    private final TaskMapper taskMapper = new TaskMapper();
+    private final TaskMapper taskMapper;
 
-    public TaskServiceImpl(TaskRepositoryImpl taskRepositoryImpl) {
-        this.taskRepositoryImpl = taskRepositoryImpl;
+    public TaskServiceImpl() {
+        taskRepositoryImpl = new TaskRepositoryImpl();
+        taskMapper = new TaskMapper();
     }
+
 
     @Override
     public Optional<TaskDto> findById(String id) {
