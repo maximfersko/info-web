@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: переделать исключения
 public class PeerRepositoryImpl implements PeerRepository {
 
     private static final String DELETE_SQL =

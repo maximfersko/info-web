@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: переделать исключения
 public class CheckRepositoryImpl implements CheckRepository {
 
     private static final String DELETE_SQL = """

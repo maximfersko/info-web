@@ -12,7 +12,7 @@ public final class PropertiesUtils {
         try {
             loadProperties();
         } catch (LoadPropertiesException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: expections
         }
     }
 

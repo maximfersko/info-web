@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
+// TODO: переделать в параметризированные тесты source = json
 class PeerServletTest {
 
     @Mock

@@ -42,6 +42,8 @@ class FriendServletTest {
     private FriendServlet friendServlet;
 
     private ObjectMapper objectMapper;
+    // TODO: переделать в параметризированные тесты source = json
+    private static final String REQUEST_BODY = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
 
     @BeforeEach
     void setUp() throws Exception {
@@ -87,9 +89,7 @@ class FriendServletTest {
 
     @Test
     void testDoPost() throws Exception {
-
-        String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+        BufferedReader reader = new BufferedReader(new StringReader(REQUEST_BODY));
         when(request.getReader()).thenReturn(reader);
 
         PeerDto firstPeer = new PeerDto("1", LocalDate.parse("2023-01-01"));
@@ -109,8 +109,8 @@ class FriendServletTest {
 
     @Test
     void testDoPut() throws Exception {
-        String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+
+        BufferedReader reader = new BufferedReader(new StringReader(REQUEST_BODY));
         when(request.getReader()).thenReturn(reader);
 
         PeerDto firstPeer = new PeerDto("1", LocalDate.parse("2023-01-01"));

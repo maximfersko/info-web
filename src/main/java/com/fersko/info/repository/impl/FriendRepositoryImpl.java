@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: переделать исключения
 public class FriendRepositoryImpl implements FriendRepository {
 
     private static final String DELETE_SQL = """

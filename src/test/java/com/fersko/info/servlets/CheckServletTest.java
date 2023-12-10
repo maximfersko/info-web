@@ -41,6 +41,8 @@ class CheckServletTest {
     private CheckServlet checkServlet;
 
     private ObjectMapper objectMapper;
+    // TODO: переделать в параметризированные тесты source = json
+    private static final String REQUEST_BODY = "{\"id\": 1, \"peerDto\": {\"id\": 2}, \"taskDto\": {\"id\": 3}, \"date\": \"2023-01-01\"}";
 
     @BeforeEach
     void setUp() throws ServletException {
@@ -69,8 +71,7 @@ class CheckServletTest {
 
     @Test
     void testDoPost() throws Exception {
-        String requestBody = "{\"id\": 1, \"peerDto\": {\"id\": 2}, \"taskDto\": {\"id\": 3}, \"date\": \"2023-01-01\"}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+        BufferedReader reader = new BufferedReader(new StringReader(REQUEST_BODY));
         when(request.getReader()).thenReturn(reader);
 
         CheckDto newCheck = new CheckDto(1L, null, null, null);
@@ -88,8 +89,7 @@ class CheckServletTest {
 
     @Test
     void testDoPut() throws Exception {
-        String requestBody = "{\"id\": 1, \"peerDto\": {\"id\": 2}, \"taskDto\": {\"id\": 3}, \"date\": \"2023-01-01\"}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+        BufferedReader reader = new BufferedReader(new StringReader(REQUEST_BODY));
         when(request.getReader()).thenReturn(reader);
 
         CheckDto updatedCheck = new CheckDto(1L, null, null, null);
