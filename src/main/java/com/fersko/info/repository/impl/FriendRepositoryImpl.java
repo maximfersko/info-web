@@ -5,6 +5,7 @@ import com.fersko.info.entity.Friend;
 import com.fersko.info.entity.Peer;
 import com.fersko.info.exceptions.ConnectionBDException;
 import com.fersko.info.repository.FriendRepository;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 public class FriendRepositoryImpl implements FriendRepository {
 
     private static final String DELETE_SQL = """
@@ -66,8 +67,9 @@ public class FriendRepositoryImpl implements FriendRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new ConnectionBDException("connection refused");
+            log.error(e.getMessage());
         }
+        return Optional.empty();
     }
 
     @Override
@@ -79,7 +81,7 @@ public class FriendRepositoryImpl implements FriendRepository {
             preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new ConnectionBDException("connection refused");
+            log.error(e.getMessage());
         }
     }
 
@@ -90,8 +92,9 @@ public class FriendRepositoryImpl implements FriendRepository {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new ConnectionBDException("connection refused");
+            log.error(e.getMessage());
         }
+        return false;
     }
 
 
@@ -106,10 +109,11 @@ public class FriendRepositoryImpl implements FriendRepository {
                 entity.setId(resultSet.getLong("id"));
             }
             preparedStatement.executeUpdate();
+            return entity;
         } catch (SQLException e) {
-            throw new ConnectionBDException("connection refused");
+            log.error(e.getMessage());
         }
-        return null;
+        return new Friend();
     }
 
     @Override
@@ -126,9 +130,9 @@ public class FriendRepositoryImpl implements FriendRepository {
             }
             return friends;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private Peer getFirstPeer(ResultSet resultSet) throws SQLException {

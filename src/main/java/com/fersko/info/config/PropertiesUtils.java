@@ -12,7 +12,7 @@ public final class PropertiesUtils {
         try {
             loadProperties();
         } catch (LoadPropertiesException e) {
-            e.printStackTrace();
+            throw new LoadPropertiesException("Fail load Properties");
         }
     }
 
@@ -26,7 +26,7 @@ public final class PropertiesUtils {
                 .getResourceAsStream("application.properties")) {
             PROPERTIES.load(stream);
         } catch (Exception e) {
-            throw new LoadPropertiesException(e);
+            throw new LoadPropertiesException(e.getMessage());
         }
     }
 

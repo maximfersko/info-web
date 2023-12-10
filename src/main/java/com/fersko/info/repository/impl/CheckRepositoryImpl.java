@@ -6,7 +6,7 @@ import com.fersko.info.entity.Peer;
 import com.fersko.info.entity.Task;
 import com.fersko.info.exceptions.ConnectionBDException;
 import com.fersko.info.repository.CheckRepository;
-
+import lombok.extern.slf4j.Slf4j;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class CheckRepositoryImpl implements CheckRepository {
 
     private static final String DELETE_SQL = """
@@ -74,8 +75,9 @@ public class CheckRepositoryImpl implements CheckRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return Optional.empty();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class CheckRepositoryImpl implements CheckRepository {
             preparedStatement.setLong(4, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -99,8 +101,9 @@ public class CheckRepositoryImpl implements CheckRepository {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new ConnectionBDException("connection refused");
+            log.error(e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -117,8 +120,9 @@ public class CheckRepositoryImpl implements CheckRepository {
             preparedStatement.executeUpdate();
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return new Check();
     }
 
     @Override
@@ -135,8 +139,9 @@ public class CheckRepositoryImpl implements CheckRepository {
             }
             return checks;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return  new ArrayList<>();
     }
 
     private Task getTask(ResultSet resultSet, Task parentTask) throws SQLException {

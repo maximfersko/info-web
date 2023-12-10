@@ -1,7 +1,7 @@
 package com.fersko.info.exceptions;
 
 public class LoadPropertiesException extends RuntimeException {
-    public LoadPropertiesException(Exception e) {
+    public LoadPropertiesException(String e) {
         super(e);
     }
 }

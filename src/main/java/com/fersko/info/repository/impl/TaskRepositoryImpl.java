@@ -3,6 +3,7 @@ package com.fersko.info.repository.impl;
 import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Task;
 import com.fersko.info.repository.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 public class TaskRepositoryImpl implements TaskRepository {
 
     private static final String DELETE_SQL =
@@ -50,8 +51,9 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return Optional.empty();
     }
 
     @Override
@@ -63,7 +65,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             preparedStatement.setString(3, entity.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -74,8 +76,9 @@ public class TaskRepositoryImpl implements TaskRepository {
             preparedStatement.setString(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -88,8 +91,9 @@ public class TaskRepositoryImpl implements TaskRepository {
             preparedStatement.executeUpdate();
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return new Task();
     }
 
     @Override
@@ -106,8 +110,9 @@ public class TaskRepositoryImpl implements TaskRepository {
             }
             return tasks;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+        return new ArrayList<>();
     }
 
     private Task getParentTask(ResultSet resultSet) throws SQLException {
