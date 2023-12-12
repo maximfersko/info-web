@@ -13,25 +13,25 @@ public class CheckMapper implements BaseMapper<Check, CheckDto> {
         if (entity == null) {
             return null;
         }
-        return new CheckDto(
-                entity.getId(),
-                peerMapper.toDto(entity.getPeer()),
-                taskMapper.toDto(entity.getTask()),
-                entity.getDate()
-        );
+        return CheckDto.builder()
+                .id(entity.getId())
+                .peerDto(peerMapper.toDto(entity.getPeer()))
+                .taskDto(taskMapper.toDto(entity.getTask()))
+                .date(entity.getDate())
+                .build();
     }
 
     @Override
-    public Check toEntity(CheckDto dto) {
+    public Check fromDto(CheckDto dto) {
         if (dto == null) {
             return null;
         }
-        return new Check(
-                dto.getId(),
-                peerMapper.toEntity(dto.getPeerDto()),
-                taskMapper.toEntity(dto.getTaskDto()),
-                dto.getDate()
-        );
+        return Check.builder()
+                .id(dto.getId())
+                .peer(peerMapper.fromDto(dto.getPeerDto()))
+                .task(taskMapper.fromDto(dto.getTaskDto()))
+                .date(dto.getDate())
+                .build();
     }
 }
 

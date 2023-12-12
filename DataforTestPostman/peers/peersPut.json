@@ -1,8 +1,9 @@
 {
-  "id": "bob",
+  "id": 1,
+  "pkNickname": "Alex",
   "birthday": [
-    2010,
-    1,
-    7
+    1994,
+    12,
+    11
   ]
 }

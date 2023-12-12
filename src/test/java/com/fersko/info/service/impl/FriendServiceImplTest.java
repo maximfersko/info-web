@@ -93,8 +93,8 @@ class FriendServiceImplTest {
     private Friend createSampleFriend(Long id) {
         return new Friend(
                 id,
-                new Peer("peer", LocalDate.parse("2022-01-01")),
-                new Peer("peer2", LocalDate.parse("2022-02-01"))
+                new Peer(1L, "peer", LocalDate.parse("2022-01-01")),
+                new Peer(2L, "peer2", LocalDate.parse("2022-02-01"))
         );
     }
 

@@ -5,13 +5,13 @@ import com.fersko.info.entity.BaseEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseRepository<T extends BaseEntity<I>, I> {
+public interface BaseRepository<T extends BaseEntity> {
 
-    Optional<T> findById(I id);
+    Optional<T> findById(Long id);
 
-    void update(T entity);
+    T update(T entity);
 
-    boolean delete(I id);
+    boolean delete(Long id);
 
     T save(T entity);
 

@@ -32,7 +32,7 @@ class FriendMapperTest {
     @Test
     void testToEntityWithNonNullValues() {
         FriendDto friendDto = createSampleFriendDto();
-        Friend friend = friendMapper.toEntity(friendDto);
+        Friend friend = friendMapper.fromDto(friendDto);
 
         assertNotNull(friend);
         assertEquals(friendDto.getId(), friend.getId());
@@ -42,7 +42,7 @@ class FriendMapperTest {
 
 
     private Friend createSampleFriend() {
-        return new Friend(1L, peerMapper.toEntity(createSamplePeerDto()), peerMapper.toEntity(createSamplePeerDto()));
+        return new Friend(1L, peerMapper.fromDto(createSamplePeerDto()), peerMapper.fromDto(createSamplePeerDto()));
     }
 
     private FriendDto createSampleFriendDto() {
@@ -50,11 +50,11 @@ class FriendMapperTest {
     }
 
     private Peer createSamplePeer() {
-        return new Peer("nickname", LocalDate.parse("2000-01-01"));
+        return new Peer(1L, "nickname", LocalDate.parse("2000-01-01"));
     }
 
     private PeerDto createSamplePeerDto() {
-        return new PeerDto("nickname", LocalDate.parse("2000-01-01"));
+        return new PeerDto(1L, "nickname", LocalDate.parse("2000-01-01"));
     }
 
 }

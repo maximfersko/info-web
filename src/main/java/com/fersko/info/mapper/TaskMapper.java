@@ -11,23 +11,25 @@ public class TaskMapper implements BaseMapper<Task, TaskDto> {
             return null;
         }
 
-        return new TaskDto(
-                entity.getId(),
-                toDto(entity.getParentTask()),
-                entity.getMaxXp()
-        );
+        return TaskDto.builder()
+                .id(entity.getId())
+                .pkTitle(entity.getPkTitle())
+                .parentTask(toDto(entity.getParentTask()))
+                .maxXp(entity.getMaxXp())
+                .build();
     }
 
     @Override
-    public Task toEntity(TaskDto dto) {
+    public Task fromDto(TaskDto dto) {
         if (dto == null) {
             return null;
         }
 
-        return new Task(
-                dto.getId(),
-                toEntity(dto.getParentTask()),
-                dto.getMaxXp()
-        );
+        return Task.builder()
+                .id(dto.getId())
+                .pkTitle(dto.getPkTitle())
+                .parentTask(fromDto(dto.getParentTask()))
+                .maxXp(dto.getMaxXp())
+                .build();
     }
 }

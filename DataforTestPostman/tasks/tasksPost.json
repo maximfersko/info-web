@@ -1,9 +1,11 @@
 {
-  "id": "MLP",
+  "id": 4,
+  "pkTitle": "MLP",
   "parentTask": {
-    "id": "CPP_matrix",
+    "id": 4,
+    "pkTitle": "SimpleBashUtils",
     "parentTask": null,
-    "maxXp": 350
+    "maxXp": 250
   },
-  "maxXp": 600
+  "maxXp": 350
 }

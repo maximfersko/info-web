@@ -20,9 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,9 +54,9 @@ class FriendRepositoryImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getLong("id")).thenReturn(friendId);
-        when(resultSet.getString("peer1_nickname")).thenReturn(expectedFriend.getFirstPeer().getId());
+        when(resultSet.getString("peer1_nickname")).thenReturn(expectedFriend.getFirstPeer().getPkNickname());
         when(resultSet.getDate("peer1_birthday")).thenReturn(Date.valueOf(expectedFriend.getFirstPeer().getBirthday()));
-        when(resultSet.getString("peer2_nickname")).thenReturn(expectedFriend.getSecondPeer().getId());
+        when(resultSet.getString("peer2_nickname")).thenReturn(expectedFriend.getSecondPeer().getPkNickname());
         when(resultSet.getDate("peer2_birthday")).thenReturn(Date.valueOf(expectedFriend.getSecondPeer().getBirthday()));
 
         Optional<Friend> result = friendRepository.findById(friendId);
@@ -82,18 +79,22 @@ class FriendRepositoryImplTest {
     }
 
     @Test
-    void testUpdate() throws SQLException {
-        Friend friend = createSampleFriend();
+    void update_shouldUpdateFriendInDatabase() throws SQLException {
+        Friend updatedFriend = createSampleFriend();
+
         when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        friendRepository.update(friend);
+        friendRepository.update(updatedFriend);
 
-        verify(preparedStatement).setString(eq(1), anyString());
-        verify(preparedStatement).setString(eq(2), anyString());
-        verify(preparedStatement).setLong(eq(3), anyLong());
+        verify(preparedStatement).setString(1, updatedFriend.getFirstPeer().getPkNickname());
+        verify(preparedStatement).setString(2, updatedFriend.getSecondPeer().getPkNickname());
+        verify(preparedStatement).setLong(3, updatedFriend.getId());
+
         verify(preparedStatement).executeUpdate();
     }
+
 
     @Test
     void delete_shouldReturnTrue_whenFriendIsDeleted() throws SQLException {
@@ -121,8 +122,8 @@ class FriendRepositoryImplTest {
 
 
     private Friend createSampleFriend() {
-        Peer firstPeer = new Peer("nickname1", Date.valueOf("2000-01-01").toLocalDate());
-        Peer secondPeer = new Peer("nickname2", Date.valueOf("1995-12-31").toLocalDate());
+        Peer firstPeer = new Peer(0L, "nickname1", Date.valueOf("2000-01-01").toLocalDate());
+        Peer secondPeer = new Peer(0L, "nickname2", Date.valueOf("1995-12-31").toLocalDate());
         return new Friend(1L, firstPeer, secondPeer);
     }
 }

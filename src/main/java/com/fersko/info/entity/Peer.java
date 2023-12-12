@@ -15,20 +15,21 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Peer implements BaseEntity<String> {
+public class Peer implements BaseEntity {
 
-    private String id;
+    private Long id;
+    private String pkNickname;
     private LocalDate birthday;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Peer peer)) return false;
-        return Objects.equals(id, peer.id) && Objects.equals(birthday, peer.birthday);
+        return Objects.equals(id, peer.id) && Objects.equals(pkNickname, peer.pkNickname) && Objects.equals(birthday, peer.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, birthday);
+        return Objects.hash(id, pkNickname, birthday);
     }
 }

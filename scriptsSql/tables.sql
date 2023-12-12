@@ -1,17 +1,22 @@
+-- Drop existing tables
 DROP TABLE IF EXISTS checks CASCADE;
 DROP TABLE IF EXISTS friends CASCADE;
 DROP TABLE IF EXISTS peers CASCADE;
 DROP TABLE IF EXISTS tasks CASCADE;
 
+
 CREATE TABLE peers
 (
-    pk_nickname TEXT PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
+    pk_nickname TEXT UNIQUE,
     birthday    DATE
 );
 
+
 CREATE TABLE tasks
 (
-    pk_title    TEXT PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
+    pk_title    TEXT UNIQUE,
     parent_task TEXT,
     max_xp      INTEGER,
     CONSTRAINT fk_tasks_parent_task
@@ -48,32 +53,28 @@ CREATE TABLE friends
         UNIQUE (peer1, peer2)
 );
 
-INSERT INTO tasks(
-    pk_title, parent_task, max_xp)
+INSERT INTO tasks(pk_title, parent_task, max_xp)
 VALUES ('SimpleBashUtils', null, 250),
        ('Linux', 'SimpleBashUtils', 500),
        ('LinuxNetwork', 'SimpleBashUtils', 300),
        ('CPP_matrix', 'SimpleBashUtils', 350),
        ('CPP_containers', 'SimpleBashUtils', 750);
 
-INSERT INTO peers(
-    pk_nickname, birthday)
+INSERT INTO peers(pk_nickname, birthday)
 VALUES ('lolek', '1994-12-11'),
        ('bolek', '1995-04-03'),
        ('stolas', '666-06-06'),
        ('poison', '1992-01-15'),
        ('remedy', '2000-11-26');
 
-INSERT INTO friends(
-    peer1, peer2)
+INSERT INTO friends(peer1, peer2)
 VALUES ('lolek', 'bolek'),
        ('poison', 'lolek'),
        ('poison', 'bolek'),
        ('remedy', 'lolek'),
        ('remedy', 'bolek');
 
-INSERT INTO checks(
-    peer, task, date)
+INSERT INTO checks(peer, task, date)
 VALUES ('bolek', 'SimpleBashUtils', '2022-10-19 10:23:54'),
        ('lolek', 'SimpleBashUtils', '2022-10-19 11:20:50'),
        ('poison', 'CPP_matrix', '2022-08-19 18:13:00'),

@@ -27,7 +27,7 @@ class TaskMapperTest {
     @Test
     void testToEntityWithNonNullValues() {
         TaskDto taskDto = createSampleTaskDto();
-        Task task = taskMapper.toEntity(taskDto);
+        Task task = taskMapper.fromDto(taskDto);
 
         assertNotNull(task);
         assertEquals(taskDto.getId(), task.getId());
@@ -36,11 +36,11 @@ class TaskMapperTest {
     }
 
     private Task createSampleTask() {
-        return new Task("linux", null, 100);
+        return new Task(2L, "linux", null, 100);
     }
 
     private TaskDto createSampleTaskDto() {
-        return new TaskDto("linux", null, 100);
+        return new TaskDto(2L, "linux", null, 100);
     }
 
 

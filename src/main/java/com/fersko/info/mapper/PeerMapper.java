@@ -12,17 +12,19 @@ public class PeerMapper implements BaseMapper<Peer, PeerDto> {
         }
         return new PeerDto(
                 entity.getId(),
+                entity.getPkNickname(),
                 entity.getBirthday()
         );
     }
 
     @Override
-    public Peer toEntity(PeerDto dto) {
+    public Peer fromDto(PeerDto dto) {
         if (dto == null) {
             return null;
         }
         return new Peer(
                 dto.getId(),
+                dto.getPkNickname(),
                 dto.getBirthday()
         );
     }

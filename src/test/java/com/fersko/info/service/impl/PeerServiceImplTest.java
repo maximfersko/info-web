@@ -23,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-
 class PeerServiceImplTest {
 
     @Mock
@@ -42,7 +41,7 @@ class PeerServiceImplTest {
 
     @Test
     void findById_shouldReturnOptionalPeerDto_whenIdExists() {
-        String peerId = "1";
+        Long peerId = 1L;
         PeerDto expectedPeerDto = createSamplePeerDto();
 
         when(peerRepositoryMock.findById(peerId)).thenReturn(Optional.of(createSamplePeer()));
@@ -59,7 +58,7 @@ class PeerServiceImplTest {
 
     @Test
     void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
-        String nonExistentPeerId = "100";
+        Long nonExistentPeerId = 100L;
 
         when(peerRepositoryMock.findById(nonExistentPeerId)).thenReturn(Optional.empty());
 
@@ -82,7 +81,7 @@ class PeerServiceImplTest {
 
     @Test
     void delete_shouldReturnTrue_whenPeerIsDeleted() {
-        String peerIdToDelete = "1";
+        Long peerIdToDelete = 1L;
 
         when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(true);
 
@@ -95,7 +94,7 @@ class PeerServiceImplTest {
 
     @Test
     void delete_shouldReturnFalse_whenPeerIsNotDeleted() {
-        String peerIdToDelete = "1";
+        Long peerIdToDelete = 1L;
 
         when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(false);
 
@@ -122,12 +121,11 @@ class PeerServiceImplTest {
         verify(peerMapperMock, times(1)).toDto(any());
     }
 
-
     private Peer createSamplePeer() {
-        return new Peer("1", LocalDate.now());
+        return new Peer(1L, "peer", LocalDate.now());
     }
 
     private PeerDto createSamplePeerDto() {
-        return new PeerDto("1", LocalDate.now());
+        return new PeerDto(1L, "peer", LocalDate.now());
     }
 }

@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,14 +47,15 @@ class TaskRepositoryImplTest {
 
     @Test
     void findById_shouldReturnTask_whenIdExists() throws SQLException {
-        String taskId = "testTask";
+        Long taskId = 1L;
         Task expectedTask = createSampleTask();
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getString("pk_title")).thenReturn(taskId);
-        when(resultSet.getString("parent_task_title")).thenReturn(expectedTask.getParentTask().getId());
+        when(resultSet.getLong("id")).thenReturn(taskId);
+        when(resultSet.getString("pk_title")).thenReturn(expectedTask.getPkTitle());
+        when(resultSet.getString("parent_task_title")).thenReturn(expectedTask.getParentTask().getPkTitle());
         when(resultSet.getInt("p_task_xp")).thenReturn(expectedTask.getParentTask().getMaxXp());
         when(resultSet.getInt("max_xp")).thenReturn(expectedTask.getMaxXp());
 
@@ -68,7 +67,7 @@ class TaskRepositoryImplTest {
 
     @Test
     void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() throws SQLException {
-        String taskId = "nonexistentTask";
+        Long taskId = 999L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -80,22 +79,31 @@ class TaskRepositoryImplTest {
     }
 
     @Test
-    void testUpdate() throws SQLException {
-        Task task = createSampleTask();
+    void update_shouldReturnUpdatedTask_whenUpdateIsSuccessful() throws SQLException {
+
+        Long taskId = 1L;
+        Task updatedTask = createUpdatedTask();
         when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
+        when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        taskRepository.update(task);
+        Task result = taskRepository.update(updatedTask);
 
-        verify(preparedStatement).setString(eq(1), anyString());
-        verify(preparedStatement).setInt(eq(2), anyInt());
-        verify(preparedStatement).setString(eq(3), anyString());
+        assertNotNull(result);
+        assertEquals(updatedTask, result);
+
+        verify(preparedStatement).setString(eq(1), eq("updatedParentTask"));
+        verify(preparedStatement).setInt(eq(2), eq(150));
+        verify(preparedStatement).setLong(eq(3), eq(1L));
         verify(preparedStatement).executeUpdate();
+        verify(preparedStatement).close();
+
     }
+
 
     @Test
     void delete_shouldReturnTrue_whenTaskIsDeleted() throws SQLException {
-        String taskId = "testTask";
+        Long taskId = 1L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(1);
@@ -107,7 +115,7 @@ class TaskRepositoryImplTest {
 
     @Test
     void delete_shouldReturnFalse_whenTaskIsNotDeleted() throws SQLException {
-        String taskId = "nonexistentTask";
+        Long taskId = 999L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(0);
@@ -117,22 +125,13 @@ class TaskRepositoryImplTest {
         assertFalse(result);
     }
 
-    @Test
-    void save_shouldReturnSavedTask() throws SQLException {
-        Task taskToSave = createSampleTask();
-        when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        when(preparedStatement.executeUpdate()).thenReturn(1);
-
-        Task savedTask = taskRepository.save(taskToSave);
-
-        assertNotNull(savedTask);
-        assertEquals(taskToSave, savedTask);
+    private Task createSampleTask() {
+        Task parentTask = new Task(1L, "parentTask", null, 50);
+        return new Task(1L, "testTask", parentTask, 100);
     }
 
-
-    private Task createSampleTask() {
-        Task parentTask = new Task("parentTask", null, 50);
-        return new Task("testTask", parentTask, 100);
+    private Task createUpdatedTask() {
+        Task parentTask = new Task(2L, "updatedParentTask", null, 75);
+        return new Task(1L, "updatedTestTask", parentTask, 150);
     }
 }

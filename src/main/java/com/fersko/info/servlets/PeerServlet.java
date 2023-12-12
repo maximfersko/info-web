@@ -33,11 +33,11 @@ public class PeerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
+            ResponseHandler.handleGetRequest(req, resp, peerService, objectMapper);
+        } else {
             List<PeerDto> peers = peerService.findByAll();
             ResponseHandler.sendJsonResponse(resp, peers, objectMapper);
-        } else {
-            ResponseHandler.handleGetRequest(req, resp, peerService, objectMapper);
         }
     }
 
@@ -52,7 +52,7 @@ public class PeerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo != null && !pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
             ResponseHandler.handleDeleteRequest(req, resp, peerService);
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

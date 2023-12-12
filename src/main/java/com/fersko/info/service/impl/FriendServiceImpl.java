@@ -28,8 +28,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public void update(FriendDto entity) {
-        friendRepositoryImpl.update(friendMapper.toEntity(entity));
+    public FriendDto update(FriendDto entity) {
+        return friendMapper.toDto(friendRepositoryImpl.update(friendMapper.fromDto(entity)));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public FriendDto save(FriendDto entity) {
-        return friendMapper.toDto(friendRepositoryImpl.save(friendMapper.toEntity(entity)));
+        return friendMapper.toDto(friendRepositoryImpl.save(friendMapper.fromDto(entity)));
     }
 
     @Override

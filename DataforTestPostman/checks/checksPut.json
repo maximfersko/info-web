@@ -1,21 +1,28 @@
 {
-  "id": 1,
+  "id": 3,
   "peerDto": {
-    "id": "lolek",
+    "id": 4,
+    "pkNickname": "poison",
     "birthday": [
-      1995,
-      4,
-      3
+      1992,
+      1,
+      15
     ]
   },
   "taskDto": {
-    "id": "CPP_matrix",
-    "parentTask": null,
-    "maxXp": 250
+    "id": 3,
+    "pkTitle": "LinuxNetwork",
+    "parentTask": {
+      "id": 3,
+      "pkTitle": "SimpleBashUtils",
+      "parentTask": null,
+      "maxXp": 250
+    },
+    "maxXp": 300
   },
   "date": [
     2022,
-    10,
+    8,
     19
   ]
 }

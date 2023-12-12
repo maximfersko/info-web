@@ -27,7 +27,7 @@ class PeerMapperTest {
     @Test
     void testToEntityWithNonNullValues() {
         PeerDto peerDto = createSamplePeerDto();
-        Peer peer = peerMapper.toEntity(peerDto);
+        Peer peer = peerMapper.fromDto(peerDto);
 
         assertNotNull(peer);
         assertEquals(peerDto.getId(), peer.getId());
@@ -36,11 +36,11 @@ class PeerMapperTest {
 
 
     private Peer createSamplePeer() {
-        return new Peer("SampleNickname", LocalDate.parse("2000-01-01"));
+        return new Peer(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
     }
 
     private PeerDto createSamplePeerDto() {
-        return new PeerDto("SampleNickname", LocalDate.parse("2000-01-01"));
+        return new PeerDto(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
     }
 
 

@@ -21,14 +21,14 @@ public class FriendMapper implements BaseMapper<Friend, FriendDto> {
     }
 
     @Override
-    public Friend toEntity(FriendDto dto) {
+    public Friend fromDto(FriendDto dto) {
         if (dto == null) {
             return null;
         }
         return new Friend(
                 dto.getId(),
-                peerMapper.toEntity(dto.getFirstPeer()),
-                peerMapper.toEntity(dto.getSecondPeer())
+                peerMapper.fromDto(dto.getFirstPeer()),
+                peerMapper.fromDto(dto.getSecondPeer())
         );
     }
 }

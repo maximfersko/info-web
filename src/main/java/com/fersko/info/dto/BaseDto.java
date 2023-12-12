@@ -1,5 +1,5 @@
 package com.fersko.info.dto;
 
-public interface BaseDto<I> {
-    I getId();
+public interface BaseDto {
+    Long getId();
 }

@@ -1,12 +1,28 @@
 {
+  "id": 3,
   "peerDto": {
-    "id": "bolek",
-    "birthday": "1990-01-01"
+    "id": 2,
+    "pkNickname": "bolek",
+    "birthday": [
+      1995,
+      4,
+      3
+    ]
   },
   "taskDto": {
-    "id": "CPP2_s21_containers",
-    "parentTask": null,
-    "maxXp": 500
+    "id": 4,
+    "pkTitle": "CPP_matrix",
+    "parentTask": {
+      "id": 1,
+      "pkTitle": "SimpleBashUtils",
+      "parentTask": null,
+      "maxXp": 250
+    },
+    "maxXp": 350
   },
-  "date": "2023-12-01"
+  "date": [
+    2022,
+    8,
+    19
+  ]
 }

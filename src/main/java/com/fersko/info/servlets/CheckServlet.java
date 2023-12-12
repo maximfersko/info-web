@@ -50,18 +50,18 @@ public class CheckServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
+            ResponseHandler.handleGetRequest(req, resp, checkService, objectMapper);
+        } else {
             List<CheckDto> checks = checkService.findByAll();
             ResponseHandler.sendJsonResponse(resp, checks, objectMapper);
-        } else {
-            ResponseHandler.handleGetRequest(req, resp, checkService, objectMapper);
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo != null && !pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
             ResponseHandler.handleDeleteRequest(req, resp, checkService);
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

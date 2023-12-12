@@ -60,9 +60,9 @@ class CheckRepositoryImplTest {
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
         when(resultSet.getLong("id")).thenReturn(checkId);
-        when(resultSet.getString("pk_nickname")).thenReturn(expectedCheck.getPeer().getId());
+        when(resultSet.getString("pk_nickname")).thenReturn(expectedCheck.getPeer().getPkNickname());
         when(resultSet.getDate("birthday")).thenReturn(Date.valueOf(expectedCheck.getPeer().getBirthday()));
-        when(resultSet.getString("pk_title")).thenReturn(expectedCheck.getTask().getId());
+        when(resultSet.getString("pk_title")).thenReturn(expectedCheck.getTask().getPkTitle());
         when(resultSet.getInt("max_xp")).thenReturn(expectedCheck.getTask().getMaxXp());
         when(resultSet.getDate("date")).thenReturn(Date.valueOf(expectedCheck.getDate()));
 
@@ -126,8 +126,9 @@ class CheckRepositoryImplTest {
     }
 
     private Check createSampleCheck() {
-        Peer peer = new Peer("nickname", LocalDate.parse("2000-01-01"));
-        Task task = new Task("taskTitle", null, 100);
+        Peer peer = new Peer(0L, "nickname", LocalDate.parse("2000-01-01"));
+        Task task = new Task(0L, "hh", null, 100);
         return new Check(1L, peer, task, LocalDate.parse("2022-01-01"));
     }
+
 }

@@ -33,7 +33,7 @@ class CheckMapperTest {
     @Test
     void testToEntityWithNonNullValues() {
         CheckDto checkDto = createSampleCheckDto();
-        Check check = checkMapper.toEntity(checkDto);
+        Check check = checkMapper.fromDto(checkDto);
 
         assertNotNull(check);
         assertEquals(checkDto.getId(), check.getId());
@@ -43,14 +43,14 @@ class CheckMapperTest {
     }
 
     private Check createSampleCheck() {
-        Peer peer = new Peer("nickname", LocalDate.parse("2000-01-01"));
-        Task task = new Task("taskTitle", null, 100);
+        Peer peer = new Peer(2L, "nickname", LocalDate.parse("2000-01-01"));
+        Task task = new Task(2L, "taskTitle", null, 100);
         return new Check(1L, peer, task, LocalDate.parse("2022-01-01"));
     }
 
     private CheckDto createSampleCheckDto() {
-        PeerDto peer = new PeerDto("nickname", LocalDate.parse("2000-01-01"));
-        TaskDto task = new TaskDto("taskTitle", null, 100);
+        PeerDto peer = new PeerDto(2L, "nickname", LocalDate.parse("2000-01-01"));
+        TaskDto task = new TaskDto(2L, "taskTitle", null, 100);
         return new CheckDto(1L, peer, task, LocalDate.parse("2022-01-01"));
     }
 

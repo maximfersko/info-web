@@ -51,7 +51,7 @@ class CheckServiceImplTest {
         CheckDto checkDto = createSampleCheckDto();
         checkService.update(checkDto);
 
-        verify(checkRepositoryImpl).update(checkMapper.toEntity(checkDto));
+        verify(checkRepositoryImpl).update(checkMapper.fromDto(checkDto));
     }
 
     @Test
@@ -79,8 +79,8 @@ class CheckServiceImplTest {
         LocalDate date = LocalDate.now();
         return new CheckDto(
                 1L,
-                new PeerDto("nickname", LocalDate.of(2000, 1, 1)),
-                new TaskDto("taskTitle", null, 100),
+                new PeerDto(1L, "nickname", LocalDate.of(2000, 1, 1)),
+                new TaskDto(1L, "taskTitle", null, 100),
                 date
         );
     }

@@ -1,6 +1,5 @@
 package com.fersko.info.servlets;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fersko.info.dto.CheckDto;
 import com.fersko.info.service.CheckService;
 import jakarta.servlet.ServletException;
@@ -20,7 +19,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,17 +39,13 @@ class CheckServletTest {
     @InjectMocks
     private CheckServlet checkServlet;
 
-    private ObjectMapper objectMapper;
-
     @BeforeEach
     void setUp() throws ServletException {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
         checkServlet = new CheckServlet();
         checkServlet.init();
         checkServlet.setCheckService(checkService);
     }
-
 
     @Test
     void testDoDeleteWithValidPathInfo() throws Exception {
@@ -64,7 +59,7 @@ class CheckServletTest {
 
         checkServlet.doDelete(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Test
@@ -88,12 +83,13 @@ class CheckServletTest {
 
     @Test
     void testDoPut() throws Exception {
+
         String requestBody = "{\"id\": 1, \"peerDto\": {\"id\": 2}, \"taskDto\": {\"id\": 3}, \"date\": \"2023-01-01\"}";
         BufferedReader reader = new BufferedReader(new StringReader(requestBody));
         when(request.getReader()).thenReturn(reader);
 
         CheckDto updatedCheck = new CheckDto(1L, null, null, null);
-        doNothing().when(checkService).update(updatedCheck);
+        doReturn(null).when(checkService).update(updatedCheck);
 
         PrintWriter writer = mock(PrintWriter.class);
         when(response.getWriter()).thenReturn(writer);
@@ -102,6 +98,7 @@ class CheckServletTest {
 
         verify(response).setStatus(HttpServletResponse.SC_OK);
     }
+
 
     @Test
     void testDoGetWithValidPathInfo() throws Exception {

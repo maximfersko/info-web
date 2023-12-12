@@ -1,6 +1,5 @@
 package com.fersko.info.servlets;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fersko.info.dto.FriendDto;
 import com.fersko.info.dto.PeerDto;
 import com.fersko.info.service.FriendService;
@@ -21,7 +20,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,12 +40,10 @@ class FriendServletTest {
     @InjectMocks
     private FriendServlet friendServlet;
 
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
         friendServlet = new FriendServlet();
         friendServlet.init();
         friendServlet.setFriendService(friendService);
@@ -56,7 +53,7 @@ class FriendServletTest {
     void testDoGetWithValidPathInfo() throws Exception {
         when(request.getPathInfo()).thenReturn("/1");
 
-        PeerDto peerDto = new PeerDto("1", LocalDate.now());
+        PeerDto peerDto = new PeerDto(2L, "1", LocalDate.now());
         FriendDto friendDto = new FriendDto(1L, peerDto, peerDto);
         when(friendService.findById(anyLong())).thenReturn(Optional.of(friendDto));
 
@@ -92,8 +89,8 @@ class FriendServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(requestBody));
         when(request.getReader()).thenReturn(reader);
 
-        PeerDto firstPeer = new PeerDto("1", LocalDate.parse("2023-01-01"));
-        PeerDto secondPeer = new PeerDto("2", LocalDate.parse("2023-01-02"));
+        PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+        PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
         FriendDto newFriend = new FriendDto(1L, firstPeer, secondPeer);
         when(friendService.save(any())).thenReturn(newFriend);
 
@@ -113,10 +110,10 @@ class FriendServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(requestBody));
         when(request.getReader()).thenReturn(reader);
 
-        PeerDto firstPeer = new PeerDto("1", LocalDate.parse("2023-01-01"));
-        PeerDto secondPeer = new PeerDto("2", LocalDate.parse("2023-01-02"));
+        PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+        PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
         FriendDto updatedFriend = new FriendDto(1L, firstPeer, secondPeer);
-        doNothing().when(friendService).update(updatedFriend);
+        doReturn(null).when(friendService).update(updatedFriend);
 
         PrintWriter writer = mock(PrintWriter.class);
         when(response.getWriter()).thenReturn(writer);

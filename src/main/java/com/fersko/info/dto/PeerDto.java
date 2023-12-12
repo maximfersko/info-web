@@ -14,20 +14,21 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PeerDto implements BaseDto<String> {
+public class PeerDto implements BaseDto {
 
-    private String id;
+    private Long id;
+    private String pkNickname;
     private LocalDate birthday;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PeerDto peerDto)) return false;
-        return Objects.equals(id, peerDto.id) && Objects.equals(birthday, peerDto.birthday);
+        return Objects.equals(id, peerDto.id) && Objects.equals(pkNickname, peerDto.pkNickname) && Objects.equals(birthday, peerDto.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, birthday);
+        return Objects.hash(id, pkNickname, birthday);
     }
 }

@@ -22,7 +22,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-
 class TaskServiceImplTest {
 
     @Mock
@@ -41,7 +40,7 @@ class TaskServiceImplTest {
 
     @Test
     void findById_shouldReturnOptionalTaskDto_whenIdExists() {
-        String taskId = "1";
+        Long taskId = 1L;
         TaskDto expectedTaskDto = createSampleTaskDto();
 
         when(taskRepositoryMock.findById(taskId)).thenReturn(Optional.of(createSampleTask()));
@@ -58,7 +57,7 @@ class TaskServiceImplTest {
 
     @Test
     void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
-        String nonExistentTaskId = "100";
+        Long nonExistentTaskId = 100L;
 
         when(taskRepositoryMock.findById(nonExistentTaskId)).thenReturn(Optional.empty());
 
@@ -79,7 +78,7 @@ class TaskServiceImplTest {
 
     @Test
     void delete_shouldReturnTrue_whenTaskIsDeleted() {
-        String taskIdToDelete = "1";
+        Long taskIdToDelete = 1L;
         when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(true);
         boolean result = taskService.delete(taskIdToDelete);
         assertTrue(result);
@@ -88,7 +87,7 @@ class TaskServiceImplTest {
 
     @Test
     void delete_shouldReturnFalse_whenTaskIsNotDeleted() {
-        String taskIdToDelete = "1";
+        Long taskIdToDelete = 1L;
 
         when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(false);
 
@@ -115,12 +114,11 @@ class TaskServiceImplTest {
         verify(taskMapperMock, times(1)).toDto(any());
     }
 
-
     private Task createSampleTask() {
-        return new Task("cpp_web_calc", null, 100);
+        return new Task(1L, "cpp_web_calc", null, 100);
     }
 
     private TaskDto createSampleTaskDto() {
-        return new TaskDto("go_calc", null, 100);
+        return new TaskDto(1L, "go_calc", null, 100);
     }
 }

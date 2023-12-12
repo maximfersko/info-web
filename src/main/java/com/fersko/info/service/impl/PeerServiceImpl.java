@@ -22,23 +22,23 @@ public class PeerServiceImpl implements PeerService {
     }
 
     @Override
-    public Optional<PeerDto> findById(String id) {
+    public Optional<PeerDto> findById(Long id) {
         return peerRepositoryImpl.findById(id).map(peerMapper::toDto);
     }
 
     @Override
-    public void update(PeerDto entity) {
-        peerRepositoryImpl.update(peerMapper.toEntity(entity));
+    public PeerDto update(PeerDto entity) {
+        return peerMapper.toDto(peerRepositoryImpl.update(peerMapper.fromDto(entity)));
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Long id) {
         return peerRepositoryImpl.delete(id);
     }
 
     @Override
     public PeerDto save(PeerDto entity) {
-        return peerMapper.toDto(peerRepositoryImpl.save(peerMapper.toEntity(entity)));
+        return peerMapper.toDto(peerRepositoryImpl.save(peerMapper.fromDto(entity)));
     }
 
     @Override

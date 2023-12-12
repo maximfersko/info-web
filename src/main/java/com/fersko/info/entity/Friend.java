@@ -13,7 +13,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Friend implements BaseEntity<Long> {
+public class Friend implements BaseEntity {
 
     private Long id;
     private Peer firstPeer;

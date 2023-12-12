@@ -1,7 +1,8 @@
 {
   "id": 3,
   "firstPeer": {
-    "id": "poison",
+    "id": 4,
+    "pkNickname": "poison",
     "birthday": [
       1992,
       1,
@@ -9,11 +10,12 @@
     ]
   },
   "secondPeer": {
-    "id": "poison",
+    "id": 4,
+    "pkNickname": "poison",
     "birthday": [
-      1995,
-      4,
-      3
+      1992,
+      1,
+      15
     ]
   }
 }

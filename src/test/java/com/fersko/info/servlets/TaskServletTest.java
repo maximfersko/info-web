@@ -1,6 +1,5 @@
 package com.fersko.info.servlets;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fersko.info.dto.TaskDto;
 import com.fersko.info.service.TaskService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,12 +36,10 @@ class TaskServletTest {
     @InjectMocks
     private TaskServlet taskServlet;
 
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
         taskServlet = new TaskServlet();
         taskServlet.init();
         taskServlet.setTaskService(taskService);
@@ -55,7 +52,7 @@ class TaskServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(requestBody));
         when(request.getReader()).thenReturn(reader);
 
-        TaskDto newTask = new TaskDto("1", null, 100);
+        TaskDto newTask = new TaskDto(1L, "1", null, 100);
         when(taskService.save(any())).thenReturn(newTask);
 
         StringWriter stringWriter = new StringWriter();
@@ -74,8 +71,8 @@ class TaskServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(requestBody));
         when(request.getReader()).thenReturn(reader);
 
-        TaskDto updatedTask = new TaskDto("1", null, 150);
-        doNothing().when(taskService).update(updatedTask);
+        TaskDto updatedTask = new TaskDto(2L, "1", null, 150);
+        doReturn(null).when(taskService).update(updatedTask);
 
         PrintWriter writer = mock(PrintWriter.class);
         when(response.getWriter()).thenReturn(writer);

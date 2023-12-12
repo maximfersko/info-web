@@ -1,9 +1,10 @@
 {
-  "id": "MLP",
+  "pkTitle": "3D_Viewer",
   "parentTask": {
-    "id": "LinuxNetwork",
+    "id": 4,
+    "pkTitle": "SimpleBashUtils",
     "parentTask": null,
-    "maxXp": 500
+    "maxXp": 250
   },
-  "maxXp": 600
+  "maxXp": 350
 }

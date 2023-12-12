@@ -32,18 +32,18 @@ public class FriendServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
+            ResponseHandler.handleGetRequest(req, resp, friendService, objectMapper);
+        } else {
             List<FriendDto> friends = friendService.findByAll();
             ResponseHandler.sendJsonResponse(resp, friends, objectMapper);
-        } else {
-            ResponseHandler.handleGetRequest(req, resp, friendService, objectMapper);
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo != null && !pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
             ResponseHandler.handleDeleteRequest(req, resp, friendService);
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

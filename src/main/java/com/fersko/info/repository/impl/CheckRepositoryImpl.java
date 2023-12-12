@@ -4,9 +4,9 @@ import com.fersko.info.config.ConnectionManager;
 import com.fersko.info.entity.Check;
 import com.fersko.info.entity.Peer;
 import com.fersko.info.entity.Task;
-import com.fersko.info.exceptions.ConnectionBDException;
 import com.fersko.info.repository.CheckRepository;
 import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -31,10 +31,13 @@ public class CheckRepositoryImpl implements CheckRepository {
                 SELECT
                     c.id,
                     c.date,
+                    p.id AS peer_id,
                     p.pk_nickname,
                     p.birthday,
+                    t.id AS task_id,
                     t.pk_title,
                     t.max_xp,
+                    pt.id AS parent_task_id,
                     pt.pk_title AS parent_pk_title,
                     pt.parent_task AS parent_parent_task,
                     pt.max_xp AS parent_max_xp
@@ -81,17 +84,19 @@ public class CheckRepositoryImpl implements CheckRepository {
     }
 
     @Override
-    public void update(Check entity) {
+    public Check update(Check entity) {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setString(1, entity.getPeer().getId());
-            preparedStatement.setString(2, entity.getTask().getId());
+            preparedStatement.setString(1, entity.getPeer().getPkNickname());
+            preparedStatement.setString(2, entity.getTask().getPkTitle());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(entity.getDate().atStartOfDay()));
             preparedStatement.setLong(4, entity.getId());
             preparedStatement.executeUpdate();
+            return entity;
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
+        return new Check();
     }
 
     @Override
@@ -110,8 +115,8 @@ public class CheckRepositoryImpl implements CheckRepository {
     public Check save(Check entity) {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, entity.getPeer().getId());
-            preparedStatement.setString(2, entity.getTask().getId());
+            preparedStatement.setString(1, entity.getPeer().getPkNickname());
+            preparedStatement.setString(2, entity.getTask().getPkTitle());
             preparedStatement.setDate(3, Date.valueOf(entity.getDate()));
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -141,43 +146,44 @@ public class CheckRepositoryImpl implements CheckRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return  new ArrayList<>();
+        return new ArrayList<>();
     }
 
     private Task getTask(ResultSet resultSet, Task parentTask) throws SQLException {
-        return new Task(
-                resultSet.getString("pk_title"),
-                parentTask,
-                resultSet.getInt("max_xp")
-        );
+        return Task.builder()
+                .id(resultSet.getLong("task_id"))
+                .pkTitle(resultSet.getString("pk_title"))
+                .parentTask(parentTask)
+                .maxXp(resultSet.getInt("max_xp"))
+                .build();
     }
 
     private Peer getPeer(ResultSet resultSet) throws SQLException {
         return new Peer(
+                resultSet.getLong("peer_id"),
                 resultSet.getString("pk_nickname"),
                 resultSet.getDate("birthday").toLocalDate()
         );
     }
 
     private Task getParentTask(ResultSet resultSet) throws SQLException {
-        String parentTaskTitle = resultSet.getString("parent_pk_title");
-        return (parentTaskTitle != null) ? new Task(
-                parentTaskTitle,
-                null,
-                resultSet.getInt("parent_max_xp")
-        ) : null;
+        long parentTaskId = resultSet.getLong("parent_task_id");
+        return (parentTaskId != 0) ? Task.builder()
+                .id(parentTaskId)
+                .pkTitle(resultSet.getString("parent_pk_title"))
+                .parentTask(null)
+                .maxXp(resultSet.getInt("parent_max_xp"))
+                .build()
+                : null;
     }
 
     private Check getCheck(ResultSet resultSet) throws SQLException {
-        Peer peer = getPeer(resultSet);
-        Task parentTask = getParentTask(resultSet);
-        Task currentTask = getTask(resultSet, parentTask);
-        return new Check(
-                resultSet.getLong("id"),
-                peer,
-                currentTask,
-                resultSet.getDate("date").toLocalDate()
-        );
+        return Check.builder()
+                .id(resultSet.getLong("id"))
+                .peer(getPeer(resultSet))
+                .task(getTask(resultSet, getParentTask(resultSet)))
+                .date(resultSet.getDate("date").toLocalDate())
+                .build();
     }
 
 }

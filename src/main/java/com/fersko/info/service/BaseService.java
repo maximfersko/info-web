@@ -5,14 +5,14 @@ import com.fersko.info.dto.BaseDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseService<T extends BaseDto<I>, I> {
+public interface BaseService<T extends BaseDto> {
 
 
-    Optional<T> findById(I id);
+    Optional<T> findById(Long id);
 
-    void update(T entity);
+    T update(T entity);
 
-    boolean delete(I id);
+    boolean delete(Long id);
 
     T save(T entity);
 

@@ -13,22 +13,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @Slf4j
 public class TaskRepositoryImpl implements TaskRepository {
 
     private static final String DELETE_SQL =
-            "DELETE FROM tasks WHERE pk_title = ?";
+            "DELETE FROM tasks WHERE id = ?";
     private static final String SAVE_SQL =
             "INSERT INTO tasks (pk_title, parent_task, max_xp) VALUES (?, ?, ?)";
     private static final String FIND_ALL_SQL = """
-                    SELECT t.pk_title, t1.pk_title AS parent_task_title, t1.max_xp AS p_task_xp, t.max_xp
+                    SELECT t.id, t.pk_title, t1.pk_title AS parent_task_title, t1.max_xp AS p_task_xp, t.max_xp
                     FROM tasks t
                     LEFT JOIN tasks t1 ON t.parent_task = t1.pk_title
             """;
     private static final String FIND_BY_ID_SQL =
-            FIND_ALL_SQL + " WHERE t.pk_title = ?";
+            FIND_ALL_SQL + " WHERE t.id = ?";
     private static final String UPDATE_SQL =
-            "UPDATE tasks SET parent_task = ?, max_xp = ? WHERE pk_title = ?";
+            "UPDATE tasks SET parent_task = ?, max_xp = ? WHERE id = ?";
     private final ConnectionManager connectionManager;
 
     public TaskRepositoryImpl(ConnectionManager connectionManager) {
@@ -40,10 +41,10 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Optional<Task> findById(String id) {
+    public Optional<Task> findById(Long id) {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
-            preparedStatement.setString(1, id);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Task task = getTask(resultSet);
@@ -57,23 +58,25 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public void update(Task entity) {
+    public Task update(Task entity) {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setString(1, entity.getParentTask().getId());
+            preparedStatement.setString(1, entity.getParentTask().getPkTitle());
             preparedStatement.setInt(2, entity.getMaxXp());
-            preparedStatement.setString(3, entity.getId());
+            preparedStatement.setLong(3, entity.getId());
             preparedStatement.executeUpdate();
+            return entity;
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
+        return new Task();
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Long id) {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
-            preparedStatement.setString(1, id);
+            preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -84,10 +87,14 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Task save(Task entity) {
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
-            preparedStatement.setString(1, entity.getId());
-            preparedStatement.setString(2, entity.getParentTask().getId());
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, entity.getPkTitle());
+            preparedStatement.setString(2, entity.getParentTask().getPkTitle());
             preparedStatement.setInt(3, entity.getMaxXp());
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                entity.setId(resultSet.getLong("id"));
+            }
             preparedStatement.executeUpdate();
             return entity;
         } catch (SQLException e) {
@@ -102,7 +109,7 @@ public class TaskRepositoryImpl implements TaskRepository {
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             List<Task> tasks = null;
-            if (resultSet.next()) {
+            if (resultSet != null) {
                 tasks = new ArrayList<>();
                 while (resultSet.next()) {
                     tasks.add(getTask(resultSet));
@@ -118,6 +125,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     private Task getParentTask(ResultSet resultSet) throws SQLException {
         String parentTaskTitle = resultSet.getString("parent_task_title");
         return (parentTaskTitle != null) ? new Task(
+                resultSet.getLong("id"),
                 parentTaskTitle,
                 null,
                 resultSet.getInt("p_task_xp")
@@ -125,11 +133,11 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     private Task getTask(ResultSet resultSet) throws SQLException {
-        return new Task(
-                resultSet.getString("pk_title"),
-                getParentTask(resultSet),
-                resultSet.getInt("max_xp")
-        );
+        return Task.builder()
+                .id(resultSet.getLong("id"))
+                .pkTitle(resultSet.getString("pk_title"))
+                .parentTask(getParentTask(resultSet))
+                .maxXp(resultSet.getInt("max_xp"))
+                .build();
     }
-
 }

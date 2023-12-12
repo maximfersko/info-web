@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PeerRepositoryImplTest {
@@ -49,13 +48,13 @@ class PeerRepositoryImplTest {
 
     @Test
     void findById_shouldReturnPeer_whenIdExists() throws SQLException {
-        String peerId = "testPeer";
+        Long peerId = 1L;
         Peer expectedPeer = createSamplePeer();
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true);
-        when(resultSet.getString("pk_nickname")).thenReturn(peerId);
+        when(resultSet.getLong("id")).thenReturn(peerId);
         when(resultSet.getDate("birthday")).thenReturn(Date.valueOf(expectedPeer.getBirthday()));
 
         Optional<Peer> result = peerRepository.findById(peerId);
@@ -66,7 +65,7 @@ class PeerRepositoryImplTest {
 
     @Test
     void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() throws SQLException {
-        String peerId = "nonexistentPeer";
+        Long peerId = 999L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -78,21 +77,8 @@ class PeerRepositoryImplTest {
     }
 
     @Test
-    void testUpdate() throws SQLException {
-        Peer peer = createSamplePeer();
-        when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-
-        peerRepository.update(peer);
-
-        verify(preparedStatement).setDate(eq(1), any(Date.class));
-        verify(preparedStatement).setString(eq(2), anyString());
-        verify(preparedStatement).executeUpdate();
-    }
-
-    @Test
     void delete_shouldReturnTrue_whenPeerIsDeleted() throws SQLException {
-        String peerId = "testPeer";
+        Long peerId = 1L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(1);
@@ -104,7 +90,7 @@ class PeerRepositoryImplTest {
 
     @Test
     void delete_shouldReturnFalse_whenPeerIsNotDeleted() throws SQLException {
-        String peerId = "nonexistentPeer";
+        Long peerId = 999L;
         when(connectionManager.getConnection()).thenReturn(connection);
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(0);
@@ -118,17 +104,23 @@ class PeerRepositoryImplTest {
     void save_shouldReturnSavedPeer() throws SQLException {
         Peer peerToSave = createSamplePeer();
         when(connectionManager.getConnection()).thenReturn(connection);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        when(connection.prepareStatement(anyString(), eq(PreparedStatement.RETURN_GENERATED_KEYS))).thenReturn(preparedStatement);
         when(preparedStatement.executeUpdate()).thenReturn(1);
+        when(preparedStatement.getGeneratedKeys()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true);
+        when(resultSet.getLong(1)).thenReturn(1L);
 
         Peer savedPeer = peerRepository.save(peerToSave);
 
         assertNotNull(savedPeer);
-        assertEquals(peerToSave, savedPeer);
+        assertEquals(1L, savedPeer.getId());
+        assertEquals(peerToSave.getPkNickname(), savedPeer.getPkNickname());
+        assertEquals(peerToSave.getBirthday(), savedPeer.getBirthday());
+
+
     }
 
-
     private Peer createSamplePeer() {
-        return new Peer("testPeer", Date.valueOf("2000-01-01").toLocalDate());
+        return new Peer(1L, null, Date.valueOf("2000-01-01").toLocalDate());
     }
 }

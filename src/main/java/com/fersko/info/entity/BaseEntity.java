@@ -1,5 +1,5 @@
 package com.fersko.info.entity;
 
-public interface BaseEntity<I> {
-    I getId();
+public interface BaseEntity {
+    Long getId();
 }

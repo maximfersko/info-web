@@ -27,8 +27,8 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
-    public void update(CheckDto entity) {
-        checkRepositoryImpl.update(checkMapper.toEntity(entity));
+    public CheckDto update(CheckDto entity) {
+        return checkMapper.toDto(checkRepositoryImpl.update(checkMapper.fromDto(entity)));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CheckServiceImpl implements CheckService {
 
     @Override
     public CheckDto save(CheckDto entity) {
-        return checkMapper.toDto(checkRepositoryImpl.save(checkMapper.toEntity(entity)));
+        return checkMapper.toDto(checkRepositoryImpl.save(checkMapper.fromDto(entity)));
     }
 
     @Override

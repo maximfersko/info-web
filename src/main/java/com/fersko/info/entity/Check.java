@@ -2,6 +2,7 @@ package com.fersko.info.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +14,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Check implements BaseEntity<Long> {
+public class Check implements BaseEntity {
 
     private Long id;
     private Peer peer;

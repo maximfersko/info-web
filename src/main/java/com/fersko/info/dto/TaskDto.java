@@ -1,6 +1,7 @@
 package com.fersko.info.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +12,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto implements BaseDto<String> {
+public class TaskDto implements BaseDto {
 
-    private String id;
+    private Long id;
+    private String pkTitle;
     private TaskDto parentTask;
     private Integer maxXp;
 
@@ -24,11 +27,11 @@ public class TaskDto implements BaseDto<String> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TaskDto taskDto)) return false;
-        return Objects.equals(id, taskDto.id) && Objects.equals(parentTask, taskDto.parentTask) && Objects.equals(maxXp, taskDto.maxXp);
+        return Objects.equals(id, taskDto.id) && Objects.equals(pkTitle, taskDto.pkTitle) && Objects.equals(parentTask, taskDto.parentTask) && Objects.equals(maxXp, taskDto.maxXp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, parentTask, maxXp);
+        return Objects.hash(id, pkTitle, parentTask, maxXp);
     }
 }

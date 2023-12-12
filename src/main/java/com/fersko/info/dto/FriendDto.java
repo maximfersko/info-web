@@ -13,7 +13,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class FriendDto implements BaseDto<Long> {
+public class FriendDto implements BaseDto {
 
     private Long id;
     private PeerDto firstPeer;

@@ -33,18 +33,18 @@ public class TaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
+            ResponseHandler.handleGetRequest(req, resp, taskService, objectMapper);
+        } else {
             List<TaskDto> checks = taskService.findByAll();
             ResponseHandler.sendJsonResponse(resp, checks, objectMapper);
-        } else {
-            ResponseHandler.handleGetRequest(req, resp, taskService, objectMapper);
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo != null && !pathInfo.equals("/")) {
+        if (pathInfo == null || pathInfo.equals("id")) {
             ResponseHandler.handleDeleteRequest(req, resp, taskService);
         } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

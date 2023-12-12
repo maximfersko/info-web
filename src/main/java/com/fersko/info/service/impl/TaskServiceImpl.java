@@ -23,23 +23,23 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public Optional<TaskDto> findById(String id) {
+    public Optional<TaskDto> findById(Long id) {
         return taskRepositoryImpl.findById(id).map(taskMapper::toDto);
     }
 
     @Override
-    public void update(TaskDto entity) {
-        taskRepositoryImpl.update(taskMapper.toEntity(entity));
+    public TaskDto update(TaskDto entity) {
+        return taskMapper.toDto(taskRepositoryImpl.update(taskMapper.fromDto(entity)));
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(Long id) {
         return taskRepositoryImpl.delete(id);
     }
 
     @Override
     public TaskDto save(TaskDto entity) {
-        return taskMapper.toDto(taskRepositoryImpl.save(taskMapper.toEntity(entity)));
+        return taskMapper.toDto(taskRepositoryImpl.save(taskMapper.fromDto(entity)));
     }
 
     @Override
