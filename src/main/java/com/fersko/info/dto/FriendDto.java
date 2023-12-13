@@ -23,7 +23,9 @@ public class FriendDto implements BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof FriendDto friendDto)) return false;
-        return Objects.equals(id, friendDto.id) && Objects.equals(firstPeer, friendDto.firstPeer) && Objects.equals(secondPeer, friendDto.secondPeer);
+        return Objects.equals(id, friendDto.id)
+               && Objects.equals(firstPeer, friendDto.firstPeer)
+               && Objects.equals(secondPeer, friendDto.secondPeer);
     }
 
     @Override

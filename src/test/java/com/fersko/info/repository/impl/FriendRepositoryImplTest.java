@@ -95,7 +95,6 @@ class FriendRepositoryImplTest {
         verify(preparedStatement).executeUpdate();
     }
 
-
     @Test
     void delete_shouldReturnTrue_whenFriendIsDeleted() throws SQLException {
         Long friendId = 1L;

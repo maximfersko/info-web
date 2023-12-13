@@ -2,6 +2,7 @@ package com.fersko.info.servlets;
 
 import com.fersko.info.dto.CheckDto;
 import com.fersko.info.service.CheckService;
+import com.fersko.info.servlets.utilities.ResponseHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,19 +50,14 @@ class CheckServletTest {
     }
 
     @Test
-    void testDoDeleteWithValidPathInfo() throws Exception {
-        when(request.getPathInfo()).thenReturn("/1");
-
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        when(response.getWriter()).thenReturn(printWriter);
-        when(checkService.delete(anyLong())).thenReturn(true);
+    void testDoDeleteWithInvalidPathInfo() throws Exception {
+        when(request.getPathInfo()).thenReturn("/invalid");
 
         checkServlet.doDelete(request, response);
 
         verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
+
 
     @Test
     void testDoPost() throws Exception {

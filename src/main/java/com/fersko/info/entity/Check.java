@@ -28,7 +28,10 @@ public class Check implements BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Check check)) return false;
-        return Objects.equals(id, check.id) && Objects.equals(peer, check.peer) && Objects.equals(task, check.task) && Objects.equals(date, check.date);
+        return Objects.equals(id, check.id)
+               && Objects.equals(peer, check.peer)
+               && Objects.equals(task, check.task)
+               && Objects.equals(date, check.date);
     }
 
     @Override

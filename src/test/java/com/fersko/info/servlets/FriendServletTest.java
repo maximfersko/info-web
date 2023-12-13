@@ -3,6 +3,7 @@ package com.fersko.info.servlets;
 import com.fersko.info.dto.FriendDto;
 import com.fersko.info.dto.PeerDto;
 import com.fersko.info.service.FriendService;
+import com.fersko.info.servlets.utilities.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -68,18 +70,12 @@ class FriendServletTest {
     }
 
     @Test
-    void testDoDeleteWithValidPathInfo() throws Exception {
-        when(request.getPathInfo()).thenReturn("/1");
-
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        when(response.getWriter()).thenReturn(printWriter);
-        when(friendService.delete(anyLong())).thenReturn(true);
+    void testDoDeleteWithInvalidPathInfo() throws Exception {
+        when(request.getPathInfo()).thenReturn("/invalid");
 
         friendServlet.doDelete(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
+        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Test

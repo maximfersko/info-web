@@ -118,17 +118,25 @@ public class CheckRepositoryImpl implements CheckRepository {
             preparedStatement.setString(1, entity.getPeer().getPkNickname());
             preparedStatement.setString(2, entity.getTask().getPkTitle());
             preparedStatement.setDate(3, Date.valueOf(entity.getDate()));
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        entity.setId(resultSet.getLong(1));
+                    }
+                }
+            } else {
+                log.error("Saving check failed, no rows affected.");
             }
-            preparedStatement.executeUpdate();
             return entity;
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            log.error("Error saving check: {}", e.getMessage(), e);
         }
+
         return new Check();
     }
+
 
     @Override
     public List<Check> findByAll() {

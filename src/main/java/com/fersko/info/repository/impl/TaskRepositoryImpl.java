@@ -91,17 +91,26 @@ public class TaskRepositoryImpl implements TaskRepository {
             preparedStatement.setString(1, entity.getPkTitle());
             preparedStatement.setString(2, entity.getParentTask().getPkTitle());
             preparedStatement.setInt(3, entity.getMaxXp());
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        entity.setId(resultSet.getLong(1));
+                    }
+                }
+            } else {
+                log.error("Saving task failed, no rows affected.");
             }
-            preparedStatement.executeUpdate();
+
             return entity;
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            log.error("Error saving task: {}", e.getMessage(), e);
         }
+
         return new Task();
     }
+
 
     @Override
     public List<Task> findByAll() {

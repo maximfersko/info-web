@@ -23,7 +23,9 @@ public class Friend implements BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Friend friend)) return false;
-        return Objects.equals(id, friend.id) && Objects.equals(firstPeer, friend.firstPeer) && Objects.equals(secondPeer, friend.secondPeer);
+        return Objects.equals(id, friend.id)
+               && Objects.equals(firstPeer, friend.firstPeer)
+               && Objects.equals(secondPeer, friend.secondPeer);
     }
 
     @Override

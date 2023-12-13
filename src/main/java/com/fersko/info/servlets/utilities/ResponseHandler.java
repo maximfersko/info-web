@@ -29,6 +29,8 @@ public class ResponseHandler {
             } catch (NumberFormatException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -44,8 +46,11 @@ public class ResponseHandler {
             } catch (NumberFormatException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
 
 
     public static void sendJsonResponse(HttpServletResponse response, Object data, ObjectMapper objectMapper) throws IOException {

@@ -5,7 +5,7 @@
     "birthday": "1990-01-01"
   },
   "taskDto": {
-    "pkTitle": "CPP2_s21_containers",
+    "pkTitle": "CPP_containers",
     "parentTask": null,
     "maxXp": 500
   },

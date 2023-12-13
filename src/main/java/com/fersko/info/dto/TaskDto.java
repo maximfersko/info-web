@@ -27,7 +27,10 @@ public class TaskDto implements BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TaskDto taskDto)) return false;
-        return Objects.equals(id, taskDto.id) && Objects.equals(pkTitle, taskDto.pkTitle) && Objects.equals(parentTask, taskDto.parentTask) && Objects.equals(maxXp, taskDto.maxXp);
+        return Objects.equals(id, taskDto.id)
+               && Objects.equals(pkTitle, taskDto.pkTitle)
+               && Objects.equals(parentTask, taskDto.parentTask)
+               && Objects.equals(maxXp, taskDto.maxXp);
     }
 
     @Override

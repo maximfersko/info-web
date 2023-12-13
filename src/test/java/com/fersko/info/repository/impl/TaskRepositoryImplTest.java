@@ -100,7 +100,6 @@ class TaskRepositoryImplTest {
 
     }
 
-
     @Test
     void delete_shouldReturnTrue_whenTaskIsDeleted() throws SQLException {
         Long taskId = 1L;

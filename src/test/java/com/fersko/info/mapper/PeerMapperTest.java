@@ -23,7 +23,6 @@ class PeerMapperTest {
         assertEquals(peer.getBirthday(), peerDto.getBirthday());
     }
 
-
     @Test
     void testToEntityWithNonNullValues() {
         PeerDto peerDto = createSamplePeerDto();
@@ -33,7 +32,6 @@ class PeerMapperTest {
         assertEquals(peerDto.getId(), peer.getId());
         assertEquals(peerDto.getBirthday(), peer.getBirthday());
     }
-
 
     private Peer createSamplePeer() {
         return new Peer(2L, "SampleNickname", LocalDate.parse("2000-01-01"));

@@ -104,17 +104,27 @@ public class FriendRepositoryImpl implements FriendRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, entity.getFirstPeer().getPkNickname());
             preparedStatement.setString(2, entity.getSecondPeer().getPkNickname());
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                entity.setId(resultSet.getLong("id"));
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        entity.setId(resultSet.getLong(1));
+                    }
+                }
+            } else {
+                log.error("Saving friend failed, no rows affected.");
             }
-            preparedStatement.executeUpdate();
+
             return entity;
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            log.error("Error saving friend: {}", e.getMessage(), e);
         }
+
         return new Friend();
     }
+
 
     @Override
     public List<Friend> findByAll() {

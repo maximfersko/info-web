@@ -116,8 +116,6 @@ class PeerRepositoryImplTest {
         assertEquals(1L, savedPeer.getId());
         assertEquals(peerToSave.getPkNickname(), savedPeer.getPkNickname());
         assertEquals(peerToSave.getBirthday(), savedPeer.getBirthday());
-
-
     }
 
     private Peer createSamplePeer() {

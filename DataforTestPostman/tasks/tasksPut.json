@@ -1,10 +1,11 @@
 {
-  "pkTitle": "3D_Viewer",
+  "id": "3",
+  "pkTitle": "LinuxNetwork",
   "parentTask": {
-    "id": 4,
-    "pkTitle": "SimpleBashUtils",
+    "id": 2,
+    "pkTitle": "Linux",
     "parentTask": null,
-    "maxXp": 250
+    "maxXp": 500
   },
   "maxXp": 350
 }

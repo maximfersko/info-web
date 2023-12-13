@@ -17,7 +17,6 @@ class CheckMapperTest {
 
     private static final CheckMapper checkMapper = new CheckMapper();
 
-
     @Test
     void testToDtoWithNonNullValues() {
         Check check = createSampleCheck();

@@ -29,7 +29,10 @@ public class CheckDto implements BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CheckDto checkDto)) return false;
-        return Objects.equals(id, checkDto.id) && Objects.equals(peerDto, checkDto.peerDto) && Objects.equals(taskDto, checkDto.taskDto) && Objects.equals(date, checkDto.date);
+        return Objects.equals(id, checkDto.id)
+               && Objects.equals(peerDto, checkDto.peerDto)
+               && Objects.equals(taskDto, checkDto.taskDto)
+               && Objects.equals(date, checkDto.date);
     }
 
     @Override

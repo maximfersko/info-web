@@ -24,7 +24,9 @@ public class PeerDto implements BaseDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PeerDto peerDto)) return false;
-        return Objects.equals(id, peerDto.id) && Objects.equals(pkNickname, peerDto.pkNickname) && Objects.equals(birthday, peerDto.birthday);
+        return Objects.equals(id, peerDto.id)
+               && Objects.equals(pkNickname, peerDto.pkNickname)
+               && Objects.equals(birthday, peerDto.birthday);
     }
 
     @Override

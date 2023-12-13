@@ -25,7 +25,9 @@ public class Peer implements BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Peer peer)) return false;
-        return Objects.equals(id, peer.id) && Objects.equals(pkNickname, peer.pkNickname) && Objects.equals(birthday, peer.birthday);
+        return Objects.equals(id, peer.id)
+               && Objects.equals(pkNickname, peer.pkNickname)
+               && Objects.equals(birthday, peer.birthday);
     }
 
     @Override
