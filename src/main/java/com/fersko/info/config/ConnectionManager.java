@@ -11,9 +11,9 @@ public class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String URL_KEY = "db.url";
     private static final String DRIVER_KEY = "db.driver";
-    private static final HikariDataSource hikariDataSource;
+    private static HikariDataSource hikariDataSource;
 
-    static {
+    public static void setup() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(PropertiesUtils.get(URL_KEY));
         hikariConfig.setUsername(PropertiesUtils.get(USERNAME_KEY));
@@ -24,7 +24,9 @@ public class ConnectionManager {
     }
 
     public Connection getConnection() throws SQLException {
+        if (hikariDataSource == null) {
+            setup();
+        }
         return hikariDataSource.getConnection();
     }
-
 }
