@@ -4,7 +4,6 @@ import com.fersko.info.dto.CheckDto;
 import com.fersko.info.entity.Check;
 
 public class CheckMapper implements BaseMapper<Check, CheckDto> {
-
     private static final PeerMapper peerMapper = new PeerMapper();
     private static final TaskMapper taskMapper = new TaskMapper();
 

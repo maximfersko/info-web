@@ -2,6 +2,7 @@ package com.fersko.info.service.impl;
 
 import com.fersko.info.dto.PeerDto;
 import com.fersko.info.mapper.PeerMapper;
+import com.fersko.info.repository.PeerRepository;
 import com.fersko.info.repository.impl.PeerRepositoryImpl;
 import com.fersko.info.service.PeerService;
 import lombok.AllArgsConstructor;
@@ -11,9 +12,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class PeerServiceImpl implements PeerService {
-
-    private final PeerRepositoryImpl peerRepositoryImpl;
-
+    private final PeerRepository peerRepositoryImpl;
     private final PeerMapper peerMapper;
 
     public PeerServiceImpl() {

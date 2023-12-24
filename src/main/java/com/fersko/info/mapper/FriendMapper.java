@@ -4,9 +4,7 @@ import com.fersko.info.dto.FriendDto;
 import com.fersko.info.entity.Friend;
 
 public class FriendMapper implements BaseMapper<Friend, FriendDto> {
-
     private static final PeerMapper peerMapper = new PeerMapper();
-
 
     @Override
     public FriendDto toDto(Friend entity) {

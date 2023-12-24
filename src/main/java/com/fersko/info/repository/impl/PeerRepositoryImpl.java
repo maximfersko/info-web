@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Slf4j
 public class PeerRepositoryImpl implements PeerRepository {
-
     private static final String DELETE_SQL =
             "DELETE FROM peers WHERE id = ?";
     private static final String SAVE_SQL =
@@ -68,7 +67,7 @@ public class PeerRepositoryImpl implements PeerRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new Peer();
+        return null;
     }
 
     @Override
@@ -106,17 +105,17 @@ public class PeerRepositoryImpl implements PeerRepository {
             log.error("Error saving peer: {}", e.getMessage(), e);
         }
 
-        return new Peer();
+        return null;
     }
 
 
     @Override
     public List<Peer> findByAll() {
+        List<Peer> peers = null;
         try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
-            List<Peer> peers = null;
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 peers = new ArrayList<>();
                 while (resultSet.next()) {
                     Peer peer = getPeer(resultSet);
@@ -127,7 +126,7 @@ public class PeerRepositoryImpl implements PeerRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new ArrayList<>();
+        return peers;
     }
 
     private Peer getPeer(ResultSet resultSet) throws SQLException {

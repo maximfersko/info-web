@@ -13,8 +13,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Friend implements BaseEntity {
-
+public class Friend extends BaseEntity {
     private Long id;
     private Peer firstPeer;
     private Peer secondPeer;
@@ -22,7 +21,8 @@ public class Friend implements BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Friend friend)) return false;
+        if (!(o instanceof Friend friend))
+            return false;
         return Objects.equals(id, friend.id)
                && Objects.equals(firstPeer, friend.firstPeer)
                && Objects.equals(secondPeer, friend.secondPeer);

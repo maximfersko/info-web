@@ -18,7 +18,6 @@ import java.util.List;
 
 @WebServlet(name = "friendServlet", urlPatterns = "/data/friends/*")
 public class FriendServlet extends HttpServlet {
-
     @Setter
     private FriendService friendService;
     private ObjectMapper objectMapper;

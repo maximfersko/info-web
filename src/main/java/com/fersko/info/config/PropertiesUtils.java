@@ -5,13 +5,13 @@ import com.fersko.info.exceptions.LoadPropertiesException;
 import java.util.Properties;
 
 public final class PropertiesUtils {
-
     private static final Properties PROPERTIES = new Properties();
 
     static {
         try {
             loadProperties();
-        } catch (LoadPropertiesException e) {
+        } catch (
+                LoadPropertiesException e) {
             throw new LoadPropertiesException("Fail load Properties");
         }
     }

@@ -3,7 +3,6 @@ package com.fersko.info.servlets;
 import com.fersko.info.dto.FriendDto;
 import com.fersko.info.dto.PeerDto;
 import com.fersko.info.service.FriendService;
-import com.fersko.info.servlets.utilities.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,6 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

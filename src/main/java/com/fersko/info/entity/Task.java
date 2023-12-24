@@ -15,18 +15,17 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task implements BaseEntity {
-
+public class Task extends BaseEntity {
     private Long id;
     private String pkTitle;
     private Task parentTask;
     private Integer maxXp;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Task task)) return false;
+        if (!(o instanceof Task task))
+            return false;
         return Objects.equals(id, task.id) &&
                Objects.equals(pkTitle, task.pkTitle) &&
                Objects.equals(parentTask, task.parentTask) &&

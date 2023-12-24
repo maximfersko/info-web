@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Slf4j
 public class FriendRepositoryImpl implements FriendRepository {
-
     private static final String DELETE_SQL = """
             DELETE FROM friends WHERE id = ?
             """;
@@ -83,7 +82,7 @@ public class FriendRepositoryImpl implements FriendRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new Friend();
+        return null;
     }
 
     @Override
@@ -122,16 +121,16 @@ public class FriendRepositoryImpl implements FriendRepository {
             log.error("Error saving friend: {}", e.getMessage(), e);
         }
 
-        return new Friend();
+        return null;
     }
 
 
     @Override
     public List<Friend> findByAll() {
+        List<Friend> friends = null;
         try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
-            List<Friend> friends = null;
             if (resultSet.next()) {
                 friends = new ArrayList<>();
                 while (resultSet.next()) {
@@ -142,7 +141,7 @@ public class FriendRepositoryImpl implements FriendRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new ArrayList<>();
+        return friends;
     }
 
     private Peer getPeer(ResultSet resultSet, String prefix) throws SQLException {

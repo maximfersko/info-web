@@ -14,8 +14,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PeerDto implements BaseDto {
-
+public class PeerDto extends BaseDto {
     private Long id;
     private String pkNickname;
     private LocalDate birthday;
@@ -23,7 +22,8 @@ public class PeerDto implements BaseDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PeerDto peerDto)) return false;
+        if (!(o instanceof PeerDto peerDto))
+            return false;
         return Objects.equals(id, peerDto.id)
                && Objects.equals(pkNickname, peerDto.pkNickname)
                && Objects.equals(birthday, peerDto.birthday);

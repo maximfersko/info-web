@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Slf4j
 public class CheckRepositoryImpl implements CheckRepository {
-
     private static final String DELETE_SQL = """
                 DELETE FROM checks WHERE id = ?
             """;
@@ -96,7 +95,7 @@ public class CheckRepositoryImpl implements CheckRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new Check();
+        return null;
     }
 
     @Override
@@ -134,17 +133,17 @@ public class CheckRepositoryImpl implements CheckRepository {
             log.error("Error saving check: {}", e.getMessage(), e);
         }
 
-        return new Check();
+        return null;
     }
 
 
     @Override
     public List<Check> findByAll() {
+        List<Check> checks = null;
         try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
-            List<Check> checks = null;
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 checks = new ArrayList<>();
                 while (resultSet.next()) {
                     checks.add(getCheck(resultSet));
@@ -154,7 +153,7 @@ public class CheckRepositoryImpl implements CheckRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new ArrayList<>();
+        return checks;
     }
 
     private Task getTask(ResultSet resultSet, Task parentTask) throws SQLException {

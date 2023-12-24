@@ -2,6 +2,7 @@ package com.fersko.info.service.impl;
 
 import com.fersko.info.dto.CheckDto;
 import com.fersko.info.mapper.CheckMapper;
+import com.fersko.info.repository.CheckRepository;
 import com.fersko.info.repository.impl.CheckRepositoryImpl;
 import com.fersko.info.service.CheckService;
 import lombok.AllArgsConstructor;
@@ -11,15 +12,13 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class CheckServiceImpl implements CheckService {
-
     private final CheckMapper checkMapper;
-    private final CheckRepositoryImpl checkRepositoryImpl;
+    private final CheckRepository checkRepositoryImpl;
 
     public CheckServiceImpl() {
         checkMapper = new CheckMapper();
         checkRepositoryImpl = new CheckRepositoryImpl();
     }
-
 
     @Override
     public Optional<CheckDto> findById(Long id) {

@@ -11,22 +11,27 @@ public class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String URL_KEY = "db.url";
     private static final String DRIVER_KEY = "db.driver";
-    private static HikariDataSource hikariDataSource;
+    private static final HikariConfig hikariConfig;
 
-    public static void setup() {
-        HikariConfig hikariConfig = new HikariConfig();
+    static {
+        hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(PropertiesUtils.get(URL_KEY));
         hikariConfig.setUsername(PropertiesUtils.get(USERNAME_KEY));
         hikariConfig.setPassword(PropertiesUtils.get(PASSWORD_KEY));
         hikariConfig.setDriverClassName(PropertiesUtils.get(DRIVER_KEY));
+    }
 
+    private final HikariDataSource hikariDataSource;
+
+    public ConnectionManager() {
         hikariDataSource = new HikariDataSource(hikariConfig);
     }
 
+    public ConnectionManager(HikariDataSource hikariDataSource) {
+        this.hikariDataSource = hikariDataSource;
+    }
+
     public Connection getConnection() throws SQLException {
-        if (hikariDataSource == null) {
-            setup();
-        }
         return hikariDataSource.getConnection();
     }
 }

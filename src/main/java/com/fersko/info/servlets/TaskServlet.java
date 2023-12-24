@@ -18,7 +18,6 @@ import java.util.List;
 
 @WebServlet(name = "taskServlet", urlPatterns = "/data/tasks/*")
 public class TaskServlet extends HttpServlet {
-
     @Setter
     private TaskService taskService;
 

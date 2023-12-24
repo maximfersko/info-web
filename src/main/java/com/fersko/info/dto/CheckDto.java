@@ -18,8 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckDto implements BaseDto {
-
+public class CheckDto extends BaseDto {
     private Long id;
     private PeerDto peerDto;
     private TaskDto taskDto;
@@ -28,7 +27,8 @@ public class CheckDto implements BaseDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CheckDto checkDto)) return false;
+        if (!(o instanceof CheckDto checkDto))
+            return false;
         return Objects.equals(id, checkDto.id)
                && Objects.equals(peerDto, checkDto.peerDto)
                && Objects.equals(taskDto, checkDto.taskDto)

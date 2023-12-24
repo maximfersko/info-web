@@ -18,7 +18,6 @@ import java.util.List;
 
 @WebServlet(name = "peerServlet", urlPatterns = "/data/peers/*")
 public class PeerServlet extends HttpServlet {
-
     @Setter
     private PeerService peerService;
 

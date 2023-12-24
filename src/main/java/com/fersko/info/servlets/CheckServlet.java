@@ -19,7 +19,6 @@ import java.util.List;
 
 @WebServlet(name = "checkServlet", urlPatterns = "/data/checks/*")
 public class CheckServlet extends HttpServlet {
-
     @Setter
     private CheckService checkService;
 

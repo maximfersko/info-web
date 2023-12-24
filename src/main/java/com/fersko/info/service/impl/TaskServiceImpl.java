@@ -2,6 +2,7 @@ package com.fersko.info.service.impl;
 
 import com.fersko.info.dto.TaskDto;
 import com.fersko.info.mapper.TaskMapper;
+import com.fersko.info.repository.TaskRepository;
 import com.fersko.info.repository.impl.TaskRepositoryImpl;
 import com.fersko.info.service.TaskService;
 import lombok.AllArgsConstructor;
@@ -11,9 +12,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
-
-    private final TaskRepositoryImpl taskRepositoryImpl;
-
+    private final TaskRepository taskRepositoryImpl;
     private final TaskMapper taskMapper;
 
     public TaskServiceImpl() {

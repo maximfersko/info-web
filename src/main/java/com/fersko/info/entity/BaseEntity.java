@@ -1,5 +1,8 @@
 package com.fersko.info.entity;
 
-public interface BaseEntity {
-    Long getId();
+import lombok.Getter;
+
+@Getter
+public class BaseEntity {
+    Long id;
 }

@@ -15,8 +15,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto implements BaseDto {
-
+public class TaskDto extends BaseDto {
     private Long id;
     private String pkTitle;
     private TaskDto parentTask;
@@ -26,7 +25,8 @@ public class TaskDto implements BaseDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TaskDto taskDto)) return false;
+        if (!(o instanceof TaskDto taskDto))
+            return false;
         return Objects.equals(id, taskDto.id)
                && Objects.equals(pkTitle, taskDto.pkTitle)
                && Objects.equals(parentTask, taskDto.parentTask)

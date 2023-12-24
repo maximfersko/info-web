@@ -15,8 +15,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Peer implements BaseEntity {
-
+public class Peer extends BaseEntity {
     private Long id;
     private String pkNickname;
     private LocalDate birthday;
@@ -24,7 +23,8 @@ public class Peer implements BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Peer peer)) return false;
+        if (!(o instanceof Peer peer))
+            return false;
         return Objects.equals(id, peer.id)
                && Objects.equals(pkNickname, peer.pkNickname)
                && Objects.equals(birthday, peer.birthday);

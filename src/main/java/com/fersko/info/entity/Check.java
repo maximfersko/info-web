@@ -17,8 +17,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Check implements BaseEntity {
-
+public class Check extends BaseEntity {
     private Long id;
     private Peer peer;
     private Task task;
@@ -27,7 +26,8 @@ public class Check implements BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Check check)) return false;
+        if (!(o instanceof Check check))
+            return false;
         return Objects.equals(id, check.id)
                && Objects.equals(peer, check.peer)
                && Objects.equals(task, check.task)

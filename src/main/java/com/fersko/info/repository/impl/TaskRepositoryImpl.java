@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Slf4j
 public class TaskRepositoryImpl implements TaskRepository {
-
     private static final String DELETE_SQL =
             "DELETE FROM tasks WHERE id = ?";
     private static final String SAVE_SQL =
@@ -69,7 +68,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new Task();
+        return null;
     }
 
     @Override
@@ -108,17 +107,17 @@ public class TaskRepositoryImpl implements TaskRepository {
             log.error("Error saving task: {}", e.getMessage(), e);
         }
 
-        return new Task();
+        return null;
     }
 
 
     @Override
     public List<Task> findByAll() {
+        List<Task> tasks = null;
         try (Connection connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
-            List<Task> tasks = null;
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 tasks = new ArrayList<>();
                 while (resultSet.next()) {
                     tasks.add(getTask(resultSet));
@@ -128,7 +127,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         } catch (SQLException e) {
             log.error(e.getMessage());
         }
-        return new ArrayList<>();
+        return tasks;
     }
 
     private Task getParentTask(ResultSet resultSet) throws SQLException {

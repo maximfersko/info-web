@@ -1,5 +1,8 @@
 package com.fersko.info.dto;
 
-public interface BaseDto {
-    Long getId();
+import lombok.Getter;
+
+@Getter
+public class BaseDto {
+    Long id;
 }
