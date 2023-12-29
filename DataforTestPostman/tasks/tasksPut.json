@@ -1,0 +1,11 @@
+{
+  "id": "3",
+  "pkTitle": "LinuxNetwork",
+  "parentTask": {
+    "id": 2,
+    "pkTitle": "Linux",
+    "parentTask": null,
+    "maxXp": 500
+  },
+  "maxXp": 350
+}

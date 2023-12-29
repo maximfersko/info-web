@@ -1,0 +1,21 @@
+{
+  "id": "6",
+  "firstPeer": {
+    "id": 2,
+    "pkNickname": "bolek",
+    "birthday": [
+      1995,
+      4,
+      3
+    ]
+  },
+  "secondPeer": {
+    "id": 2,
+    "pkNickname": "bolek",
+    "birthday": [
+      1995,
+      4,
+      3
+    ]
+  }
+}
