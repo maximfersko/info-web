@@ -28,92 +28,92 @@ import static org.mockito.Mockito.when;
 
 class FriendServletTest {
 
-    @Mock
-    private FriendService friendService;
+	@Mock
+	private FriendService friendService;
 
-    @Mock
-    private HttpServletRequest request;
+	@Mock
+	private HttpServletRequest request;
 
-    @Mock
-    private HttpServletResponse response;
+	@Mock
+	private HttpServletResponse response;
 
-    @InjectMocks
-    private FriendServlet friendServlet;
+	@InjectMocks
+	private FriendServlet friendServlet;
 
 
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        friendServlet = new FriendServlet();
-        friendServlet.init();
-        friendServlet.setFriendService(friendService);
-    }
+	@BeforeEach
+	void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
+		friendServlet = new FriendServlet();
+		friendServlet.init();
+		friendServlet.setFriendService(friendService);
+	}
 
-    @Test
-    void testDoGetWithValidPathInfo() throws Exception {
-        when(request.getPathInfo()).thenReturn("/1");
+	@Test
+	void testDoGetWithValidPathInfo() throws Exception {
+		when(request.getPathInfo()).thenReturn("/1");
 
-        PeerDto peerDto = new PeerDto(2L, "1", LocalDate.now());
-        FriendDto friendDto = new FriendDto(1L, peerDto, peerDto);
-        when(friendService.findById(anyLong())).thenReturn(Optional.of(friendDto));
+		PeerDto peerDto = new PeerDto(2L, "1", LocalDate.now());
+		FriendDto friendDto = new FriendDto(1L, peerDto, peerDto);
+		when(friendService.findById(anyLong())).thenReturn(Optional.of(friendDto));
 
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(printWriter);
 
-        friendServlet.doGet(request, response);
+		friendServlet.doGet(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-        verify(response).getWriter();
-    }
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+		verify(response).getWriter();
+	}
 
-    @Test
-    void testDoDeleteWithInvalidPathInfo() throws Exception {
-        when(request.getPathInfo()).thenReturn("/invalid");
+	@Test
+	void testDoDeleteWithInvalidPathInfo() throws Exception {
+		when(request.getPathInfo()).thenReturn("/invalid");
 
-        friendServlet.doDelete(request, response);
+		friendServlet.doDelete(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    }
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
 
-    @Test
-    void testDoPost() throws Exception {
+	@Test
+	void testDoPost() throws Exception {
 
-        String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+		String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
-        PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
-        FriendDto newFriend = new FriendDto(1L, firstPeer, secondPeer);
-        when(friendService.save(any())).thenReturn(newFriend);
+		PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+		PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
+		FriendDto newFriend = new FriendDto(1L, firstPeer, secondPeer);
+		when(friendService.save(any())).thenReturn(newFriend);
 
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(printWriter);
 
-        friendServlet.doPost(request, response);
+		friendServlet.doPost(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-        verify(response).getWriter();
-    }
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+		verify(response).getWriter();
+	}
 
-    @Test
-    void testDoPut() throws Exception {
-        String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+	@Test
+	void testDoPut() throws Exception {
+		String requestBody = "{\"id\": 1, \"firstPeer\": {\"id\": \"1\", \"birthday\": \"2023-01-01\"}, \"secondPeer\": {\"id\": \"2\", \"birthday\": \"2023-01-02\"}}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
-        PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
-        FriendDto updatedFriend = new FriendDto(1L, firstPeer, secondPeer);
-        doReturn(null).when(friendService).update(updatedFriend);
+		PeerDto firstPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+		PeerDto secondPeer = new PeerDto(2L, "2", LocalDate.parse("2023-01-02"));
+		FriendDto updatedFriend = new FriendDto(1L, firstPeer, secondPeer);
+		doReturn(null).when(friendService).update(updatedFriend);
 
-        PrintWriter writer = mock(PrintWriter.class);
-        when(response.getWriter()).thenReturn(writer);
+		PrintWriter writer = mock(PrintWriter.class);
+		when(response.getWriter()).thenReturn(writer);
 
-        friendServlet.doPut(request, response);
+		friendServlet.doPut(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-    }
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+	}
 }

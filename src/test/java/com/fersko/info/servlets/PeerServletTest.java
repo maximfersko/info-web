@@ -25,61 +25,61 @@ import static org.mockito.Mockito.when;
 
 class PeerServletTest {
 
-    @Mock
-    private PeerService peerService;
+	@Mock
+	private PeerService peerService;
 
-    @Mock
-    private HttpServletRequest request;
+	@Mock
+	private HttpServletRequest request;
 
-    @Mock
-    private HttpServletResponse response;
+	@Mock
+	private HttpServletResponse response;
 
-    @InjectMocks
-    private PeerServlet peerServlet;
+	@InjectMocks
+	private PeerServlet peerServlet;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        peerServlet = new PeerServlet();
-        peerServlet.init();
-        peerServlet.setPeerService(peerService);
-    }
+	@BeforeEach
+	void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
+		peerServlet = new PeerServlet();
+		peerServlet.init();
+		peerServlet.setPeerService(peerService);
+	}
 
-    @Test
-    void testDoPost() throws Exception {
+	@Test
+	void testDoPost() throws Exception {
 
-        String requestBody = "{\"id\": \"1\", \"birthday\": \"2023-01-01\"}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+		String requestBody = "{\"id\": \"1\", \"birthday\": \"2023-01-01\"}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        PeerDto newPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
-        when(peerService.save(any())).thenReturn(newPeer);
+		PeerDto newPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+		when(peerService.save(any())).thenReturn(newPeer);
 
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(printWriter);
 
-        peerServlet.doPost(request, response);
+		peerServlet.doPost(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-        verify(response).getWriter();
-    }
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+		verify(response).getWriter();
+	}
 
-    @Test
-    void testDoPut() throws Exception {
-        String requestBody = "{\"id\": \"1\", \"birthday\": \"2023-01-01\"}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+	@Test
+	void testDoPut() throws Exception {
+		String requestBody = "{\"id\": \"1\", \"birthday\": \"2023-01-01\"}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        PeerDto updatedPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
-        doReturn(null).when(peerService).update(updatedPeer);
+		PeerDto updatedPeer = new PeerDto(1L, "1", LocalDate.parse("2023-01-01"));
+		doReturn(null).when(peerService).update(updatedPeer);
 
-        PrintWriter writer = mock(PrintWriter.class);
-        when(response.getWriter()).thenReturn(writer);
+		PrintWriter writer = mock(PrintWriter.class);
+		when(response.getWriter()).thenReturn(writer);
 
-        peerServlet.doPut(request, response);
+		peerServlet.doPut(request, response);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-    }
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+	}
 
 }

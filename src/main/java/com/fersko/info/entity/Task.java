@@ -16,24 +16,25 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task extends BaseEntity {
-    private Long id;
-    private String pkTitle;
-    private Task parentTask;
-    private Integer maxXp;
+	private Long id;
+	private String pkTitle;
+	private Task parentTask;
+	private Integer maxXp;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Task task))
-            return false;
-        return Objects.equals(id, task.id) &&
-               Objects.equals(pkTitle, task.pkTitle) &&
-               Objects.equals(parentTask, task.parentTask) &&
-               Objects.equals(maxXp, task.maxXp);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Task task))
+			return false;
+		return Objects.equals(id, task.id) &&
+				Objects.equals(pkTitle, task.pkTitle) &&
+				Objects.equals(parentTask, task.parentTask) &&
+				Objects.equals(maxXp, task.maxXp);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, pkTitle, parentTask, maxXp);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, pkTitle, parentTask, maxXp);
+	}
 }

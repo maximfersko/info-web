@@ -24,61 +24,61 @@ import static org.mockito.Mockito.when;
 
 class TaskServletTest {
 
-    @Mock
-    private TaskService taskService;
+	@Mock
+	private TaskService taskService;
 
-    @Mock
-    private HttpServletRequest request;
+	@Mock
+	private HttpServletRequest request;
 
-    @Mock
-    private HttpServletResponse response;
+	@Mock
+	private HttpServletResponse response;
 
-    @InjectMocks
-    private TaskServlet taskServlet;
-
-
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        taskServlet = new TaskServlet();
-        taskServlet.init();
-        taskServlet.setTaskService(taskService);
-    }
+	@InjectMocks
+	private TaskServlet taskServlet;
 
 
-    @Test
-    void testDoPost() throws Exception {
-        String requestBody = "{\"id\": \"1\", \"parentTask\": null, \"maxXp\": 100}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+	@BeforeEach
+	void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
+		taskServlet = new TaskServlet();
+		taskServlet.init();
+		taskServlet.setTaskService(taskService);
+	}
 
-        TaskDto newTask = new TaskDto(1L, "1", null, 100);
-        when(taskService.save(any())).thenReturn(newTask);
 
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        when(response.getWriter()).thenReturn(printWriter);
+	@Test
+	void testDoPost() throws Exception {
+		String requestBody = "{\"id\": \"1\", \"parentTask\": null, \"maxXp\": 100}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        taskServlet.doPost(request, response);
+		TaskDto newTask = new TaskDto(1L, "1", null, 100);
+		when(taskService.save(any())).thenReturn(newTask);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-        verify(response).getWriter();
-    }
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+		when(response.getWriter()).thenReturn(printWriter);
 
-    @Test
-    void testDoPut() throws Exception {
-        String requestBody = "{\"id\": \"1\", \"parentTask\": null, \"maxXp\": 150}";
-        BufferedReader reader = new BufferedReader(new StringReader(requestBody));
-        when(request.getReader()).thenReturn(reader);
+		taskServlet.doPost(request, response);
 
-        TaskDto updatedTask = new TaskDto(2L, "1", null, 150);
-        doReturn(null).when(taskService).update(updatedTask);
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+		verify(response).getWriter();
+	}
 
-        PrintWriter writer = mock(PrintWriter.class);
-        when(response.getWriter()).thenReturn(writer);
+	@Test
+	void testDoPut() throws Exception {
+		String requestBody = "{\"id\": \"1\", \"parentTask\": null, \"maxXp\": 150}";
+		BufferedReader reader = new BufferedReader(new StringReader(requestBody));
+		when(request.getReader()).thenReturn(reader);
 
-        taskServlet.doPut(request, response);
+		TaskDto updatedTask = new TaskDto(2L, "1", null, 150);
+		doReturn(null).when(taskService).update(updatedTask);
 
-        verify(response).setStatus(HttpServletResponse.SC_OK);
-    }
+		PrintWriter writer = mock(PrintWriter.class);
+		when(response.getWriter()).thenReturn(writer);
+
+		taskServlet.doPut(request, response);
+
+		verify(response).setStatus(HttpServletResponse.SC_OK);
+	}
 }

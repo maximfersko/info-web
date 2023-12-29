@@ -11,35 +11,35 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PeerMapperTest {
 
-    private final PeerMapper peerMapper = new PeerMapper();
+	private final PeerMapper peerMapper = new PeerMapper();
 
-    @Test
-    void testToDtoWithNonNullValues() {
-        Peer peer = createSamplePeer();
-        PeerDto peerDto = peerMapper.toDto(peer);
+	@Test
+	void testToDtoWithNonNullValues() {
+		Peer peer = createSamplePeer();
+		PeerDto peerDto = peerMapper.toDto(peer);
 
-        assertNotNull(peerDto);
-        assertEquals(peer.getId(), peerDto.getId());
-        assertEquals(peer.getBirthday(), peerDto.getBirthday());
-    }
+		assertNotNull(peerDto);
+		assertEquals(peer.getId(), peerDto.getId());
+		assertEquals(peer.getBirthday(), peerDto.getBirthday());
+	}
 
-    @Test
-    void testToEntityWithNonNullValues() {
-        PeerDto peerDto = createSamplePeerDto();
-        Peer peer = peerMapper.fromDto(peerDto);
+	@Test
+	void testToEntityWithNonNullValues() {
+		PeerDto peerDto = createSamplePeerDto();
+		Peer peer = peerMapper.fromDto(peerDto);
 
-        assertNotNull(peer);
-        assertEquals(peerDto.getId(), peer.getId());
-        assertEquals(peerDto.getBirthday(), peer.getBirthday());
-    }
+		assertNotNull(peer);
+		assertEquals(peerDto.getId(), peer.getId());
+		assertEquals(peerDto.getBirthday(), peer.getBirthday());
+	}
 
-    private Peer createSamplePeer() {
-        return new Peer(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
-    }
+	private Peer createSamplePeer() {
+		return new Peer(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
+	}
 
-    private PeerDto createSamplePeerDto() {
-        return new PeerDto(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
-    }
+	private PeerDto createSamplePeerDto() {
+		return new PeerDto(2L, "SampleNickname", LocalDate.parse("2000-01-01"));
+	}
 
 
 }

@@ -12,40 +12,40 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class FriendServiceImpl implements FriendService {
-    private final FriendRepository friendRepositoryImpl;
-    private final FriendMapper friendMapper;
+	private final FriendRepository friendRepositoryImpl;
+	private final FriendMapper friendMapper;
 
-    public FriendServiceImpl() {
-        friendRepositoryImpl = new FriendRepositoryImpl();
-        friendMapper = new FriendMapper();
-    }
+	public FriendServiceImpl() {
+		friendRepositoryImpl = new FriendRepositoryImpl();
+		friendMapper = new FriendMapper();
+	}
 
 
-    @Override
-    public Optional<FriendDto> findById(Long id) {
-        return friendRepositoryImpl.findById(id).map(friendMapper::toDto);
-    }
+	@Override
+	public Optional<FriendDto> findById(Long id) {
+		return friendRepositoryImpl.findById(id).map(friendMapper::toDto);
+	}
 
-    @Override
-    public FriendDto update(FriendDto entity) {
-        return friendMapper.toDto(friendRepositoryImpl.update(friendMapper.fromDto(entity)));
-    }
+	@Override
+	public FriendDto update(FriendDto entity) {
+		return friendMapper.toDto(friendRepositoryImpl.update(friendMapper.fromDto(entity)));
+	}
 
-    @Override
-    public boolean delete(Long id) {
-        return friendRepositoryImpl.delete(id);
-    }
+	@Override
+	public boolean delete(Long id) {
+		return friendRepositoryImpl.delete(id);
+	}
 
-    @Override
-    public FriendDto save(FriendDto entity) {
-        return friendMapper.toDto(friendRepositoryImpl.save(friendMapper.fromDto(entity)));
-    }
+	@Override
+	public FriendDto save(FriendDto entity) {
+		return friendMapper.toDto(friendRepositoryImpl.save(friendMapper.fromDto(entity)));
+	}
 
-    @Override
-    public List<FriendDto> findByAll() {
-        return friendRepositoryImpl.findByAll()
-                .stream()
-                .map(friendMapper::toDto)
-                .toList();
-    }
+	@Override
+	public List<FriendDto> findByAll() {
+		return friendRepositoryImpl.findByAll()
+				.stream()
+				.map(friendMapper::toDto)
+				.toList();
+	}
 }

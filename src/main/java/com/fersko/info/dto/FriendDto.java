@@ -14,22 +14,23 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FriendDto extends BaseDto {
-    private Long id;
-    private PeerDto firstPeer;
-    private PeerDto secondPeer;
+	private Long id;
+	private PeerDto firstPeer;
+	private PeerDto secondPeer;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FriendDto friendDto))
-            return false;
-        return Objects.equals(id, friendDto.id)
-               && Objects.equals(firstPeer, friendDto.firstPeer)
-               && Objects.equals(secondPeer, friendDto.secondPeer);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof FriendDto friendDto))
+			return false;
+		return Objects.equals(id, friendDto.id)
+				&& Objects.equals(firstPeer, friendDto.firstPeer)
+				&& Objects.equals(secondPeer, friendDto.secondPeer);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstPeer, secondPeer);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, firstPeer, secondPeer);
+	}
 }

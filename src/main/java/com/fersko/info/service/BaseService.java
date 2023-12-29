@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BaseService<T extends BaseDto> {
-    Optional<T> findById(Long id);
+	Optional<T> findById(Long id);
 
-    T update(T entity);
+	T update(T entity);
 
-    boolean delete(Long id);
+	boolean delete(Long id);
 
-    T save(T entity);
+	T save(T entity);
 
-    List<T> findByAll();
+	List<T> findByAll();
 }

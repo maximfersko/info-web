@@ -12,40 +12,40 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
-    private final TaskRepository taskRepositoryImpl;
-    private final TaskMapper taskMapper;
+	private final TaskRepository taskRepositoryImpl;
+	private final TaskMapper taskMapper;
 
-    public TaskServiceImpl() {
-        taskRepositoryImpl = new TaskRepositoryImpl();
-        taskMapper = new TaskMapper();
-    }
+	public TaskServiceImpl() {
+		taskRepositoryImpl = new TaskRepositoryImpl();
+		taskMapper = new TaskMapper();
+	}
 
 
-    @Override
-    public Optional<TaskDto> findById(Long id) {
-        return taskRepositoryImpl.findById(id).map(taskMapper::toDto);
-    }
+	@Override
+	public Optional<TaskDto> findById(Long id) {
+		return taskRepositoryImpl.findById(id).map(taskMapper::toDto);
+	}
 
-    @Override
-    public TaskDto update(TaskDto entity) {
-        return taskMapper.toDto(taskRepositoryImpl.update(taskMapper.fromDto(entity)));
-    }
+	@Override
+	public TaskDto update(TaskDto entity) {
+		return taskMapper.toDto(taskRepositoryImpl.update(taskMapper.fromDto(entity)));
+	}
 
-    @Override
-    public boolean delete(Long id) {
-        return taskRepositoryImpl.delete(id);
-    }
+	@Override
+	public boolean delete(Long id) {
+		return taskRepositoryImpl.delete(id);
+	}
 
-    @Override
-    public TaskDto save(TaskDto entity) {
-        return taskMapper.toDto(taskRepositoryImpl.save(taskMapper.fromDto(entity)));
-    }
+	@Override
+	public TaskDto save(TaskDto entity) {
+		return taskMapper.toDto(taskRepositoryImpl.save(taskMapper.fromDto(entity)));
+	}
 
-    @Override
-    public List<TaskDto> findByAll() {
-        return taskRepositoryImpl.findByAll()
-                .stream()
-                .map(taskMapper::toDto)
-                .toList();
-    }
+	@Override
+	public List<TaskDto> findByAll() {
+		return taskRepositoryImpl.findByAll()
+				.stream()
+				.map(taskMapper::toDto)
+				.toList();
+	}
 }

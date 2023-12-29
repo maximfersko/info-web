@@ -19,52 +19,52 @@ import java.util.List;
 
 @WebServlet(name = "checkServlet", urlPatterns = "/data/checks/*")
 public class CheckServlet extends HttpServlet {
-    @Setter
-    private CheckService checkService;
+	@Setter
+	private CheckService checkService;
 
-    private ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
-    @Override
-    public void init() throws ServletException {
-        checkService = new CheckServiceImpl();
-        objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    }
+	@Override
+	public void init() throws ServletException {
+		checkService = new CheckServiceImpl();
+		objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        CheckDto newCheck = objectMapper.readValue(requestBody, CheckDto.class);
-        CheckDto savedCheck = checkService.save(newCheck);
-        ResponseHandler.sendJsonResponse(resp, savedCheck, objectMapper);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		CheckDto newCheck = objectMapper.readValue(requestBody, CheckDto.class);
+		CheckDto savedCheck = checkService.save(newCheck);
+		ResponseHandler.sendJsonResponse(resp, savedCheck, objectMapper);
+	}
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        CheckDto updatedCheck = objectMapper.readValue(requestBody, CheckDto.class);
-        checkService.update(updatedCheck);
-        ResponseHandler.sendJsonResponse(resp, updatedCheck, objectMapper);
-    }
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		CheckDto updatedCheck = objectMapper.readValue(requestBody, CheckDto.class);
+		checkService.update(updatedCheck);
+		ResponseHandler.sendJsonResponse(resp, updatedCheck, objectMapper);
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleGetRequest(req, resp, checkService, objectMapper);
-        } else {
-            List<CheckDto> checks = checkService.findByAll();
-            ResponseHandler.sendJsonResponse(resp, checks, objectMapper);
-        }
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleGetRequest(req, resp, checkService, objectMapper);
+		} else {
+			List<CheckDto> checks = checkService.findByAll();
+			ResponseHandler.sendJsonResponse(resp, checks, objectMapper);
+		}
+	}
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleDeleteRequest(req, resp, checkService);
-        } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleDeleteRequest(req, resp, checkService);
+		} else {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+	}
 
 }

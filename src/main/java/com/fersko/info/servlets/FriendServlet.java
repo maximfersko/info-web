@@ -18,52 +18,52 @@ import java.util.List;
 
 @WebServlet(name = "friendServlet", urlPatterns = "/data/friends/*")
 public class FriendServlet extends HttpServlet {
-    @Setter
-    private FriendService friendService;
-    private ObjectMapper objectMapper;
+	@Setter
+	private FriendService friendService;
+	private ObjectMapper objectMapper;
 
-    @Override
-    public void init() throws ServletException {
-        friendService = new FriendServiceImpl();
-        objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    }
+	@Override
+	public void init() throws ServletException {
+		friendService = new FriendServiceImpl();
+		objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleGetRequest(req, resp, friendService, objectMapper);
-        } else {
-            List<FriendDto> friends = friendService.findByAll();
-            ResponseHandler.sendJsonResponse(resp, friends, objectMapper);
-        }
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleGetRequest(req, resp, friendService, objectMapper);
+		} else {
+			List<FriendDto> friends = friendService.findByAll();
+			ResponseHandler.sendJsonResponse(resp, friends, objectMapper);
+		}
+	}
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleDeleteRequest(req, resp, friendService);
-        } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleDeleteRequest(req, resp, friendService);
+		} else {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        FriendDto friend = objectMapper.readValue(requestBody, FriendDto.class);
-        FriendDto friendSaved = friendService.save(friend);
-        ResponseHandler.sendJsonResponse(resp, friendSaved, objectMapper);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		FriendDto friend = objectMapper.readValue(requestBody, FriendDto.class);
+		FriendDto friendSaved = friendService.save(friend);
+		ResponseHandler.sendJsonResponse(resp, friendSaved, objectMapper);
+	}
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        FriendDto updatedFriend = objectMapper.readValue(requestBody, FriendDto.class);
-        friendService.update(updatedFriend);
-        ResponseHandler.sendJsonResponse(resp, updatedFriend, objectMapper);
-    }
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		FriendDto updatedFriend = objectMapper.readValue(requestBody, FriendDto.class);
+		friendService.update(updatedFriend);
+		ResponseHandler.sendJsonResponse(resp, updatedFriend, objectMapper);
+	}
 
 
 }

@@ -18,53 +18,53 @@ import java.util.List;
 
 @WebServlet(name = "peerServlet", urlPatterns = "/data/peers/*")
 public class PeerServlet extends HttpServlet {
-    @Setter
-    private PeerService peerService;
+	@Setter
+	private PeerService peerService;
 
-    private ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
-    @Override
-    public void init() throws ServletException {
-        peerService = new PeerServiceImpl();
-        objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    }
+	@Override
+	public void init() throws ServletException {
+		peerService = new PeerServiceImpl();
+		objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleGetRequest(req, resp, peerService, objectMapper);
-        } else {
-            List<PeerDto> peers = peerService.findByAll();
-            ResponseHandler.sendJsonResponse(resp, peers, objectMapper);
-        }
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleGetRequest(req, resp, peerService, objectMapper);
+		} else {
+			List<PeerDto> peers = peerService.findByAll();
+			ResponseHandler.sendJsonResponse(resp, peers, objectMapper);
+		}
+	}
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        PeerDto updatedPeer = objectMapper.readValue(requestBody, PeerDto.class);
-        peerService.update(updatedPeer);
-        ResponseHandler.sendJsonResponse(resp, updatedPeer, objectMapper);
-    }
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		PeerDto updatedPeer = objectMapper.readValue(requestBody, PeerDto.class);
+		peerService.update(updatedPeer);
+		ResponseHandler.sendJsonResponse(resp, updatedPeer, objectMapper);
+	}
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("id")) {
-            ResponseHandler.handleDeleteRequest(req, resp, peerService);
-        } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.equals("id")) {
+			ResponseHandler.handleDeleteRequest(req, resp, peerService);
+		} else {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestBody = ResponseHandler.concatString(req);
-        PeerDto newPeer = objectMapper.readValue(requestBody, PeerDto.class);
-        PeerDto savedCheck = peerService.save(newPeer);
-        ResponseHandler.sendJsonResponse(resp, savedCheck, objectMapper);
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String requestBody = ResponseHandler.concatString(req);
+		PeerDto newPeer = objectMapper.readValue(requestBody, PeerDto.class);
+		PeerDto savedCheck = peerService.save(newPeer);
+		ResponseHandler.sendJsonResponse(resp, savedCheck, objectMapper);
+	}
 
 
 }

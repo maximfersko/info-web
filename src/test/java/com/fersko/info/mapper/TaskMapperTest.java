@@ -11,37 +11,37 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TaskMapperTest {
 
-    private final TaskMapper taskMapper = new TaskMapper();
+	private final TaskMapper taskMapper = new TaskMapper();
 
-    @Test
-    void testToDtoWithNonNullValues() {
-        Task task = createSampleTask();
-        TaskDto taskDto = taskMapper.toDto(task);
+	@Test
+	void testToDtoWithNonNullValues() {
+		Task task = createSampleTask();
+		TaskDto taskDto = taskMapper.toDto(task);
 
-        assertNotNull(taskDto);
-        assertEquals(task.getId(), taskDto.getId());
-        assertNull(taskDto.getParentTask());
-        assertEquals(task.getMaxXp(), taskDto.getMaxXp());
-    }
+		assertNotNull(taskDto);
+		assertEquals(task.getId(), taskDto.getId());
+		assertNull(taskDto.getParentTask());
+		assertEquals(task.getMaxXp(), taskDto.getMaxXp());
+	}
 
-    @Test
-    void testToEntityWithNonNullValues() {
-        TaskDto taskDto = createSampleTaskDto();
-        Task task = taskMapper.fromDto(taskDto);
+	@Test
+	void testToEntityWithNonNullValues() {
+		TaskDto taskDto = createSampleTaskDto();
+		Task task = taskMapper.fromDto(taskDto);
 
-        assertNotNull(task);
-        assertEquals(taskDto.getId(), task.getId());
-        assertNull(task.getParentTask());
-        assertEquals(taskDto.getMaxXp(), task.getMaxXp());
-    }
+		assertNotNull(task);
+		assertEquals(taskDto.getId(), task.getId());
+		assertNull(task.getParentTask());
+		assertEquals(taskDto.getMaxXp(), task.getMaxXp());
+	}
 
-    private Task createSampleTask() {
-        return new Task(2L, "linux", null, 100);
-    }
+	private Task createSampleTask() {
+		return new Task(2L, "linux", null, 100);
+	}
 
-    private TaskDto createSampleTaskDto() {
-        return new TaskDto(2L, "linux", null, 100);
-    }
+	private TaskDto createSampleTaskDto() {
+		return new TaskDto(2L, "linux", null, 100);
+	}
 
 
 }

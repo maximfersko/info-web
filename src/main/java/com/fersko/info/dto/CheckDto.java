@@ -19,25 +19,26 @@ import java.util.Objects;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckDto extends BaseDto {
-    private Long id;
-    private PeerDto peerDto;
-    private TaskDto taskDto;
-    private LocalDate date;
+	private Long id;
+	private PeerDto peerDto;
+	private TaskDto taskDto;
+	private LocalDate date;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CheckDto checkDto))
-            return false;
-        return Objects.equals(id, checkDto.id)
-               && Objects.equals(peerDto, checkDto.peerDto)
-               && Objects.equals(taskDto, checkDto.taskDto)
-               && Objects.equals(date, checkDto.date);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof CheckDto checkDto))
+			return false;
+		return Objects.equals(id, checkDto.id)
+				&& Objects.equals(peerDto, checkDto.peerDto)
+				&& Objects.equals(taskDto, checkDto.taskDto)
+				&& Objects.equals(date, checkDto.date);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, peerDto, taskDto, date);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, peerDto, taskDto, date);
+	}
 
 }

@@ -24,101 +24,101 @@ import static org.mockito.Mockito.when;
 
 class TaskServiceImplTest {
 
-    @Mock
-    private TaskRepositoryImpl taskRepositoryMock;
+	@Mock
+	private TaskRepositoryImpl taskRepositoryMock;
 
-    @Mock
-    private TaskMapper taskMapperMock;
+	@Mock
+	private TaskMapper taskMapperMock;
 
-    @InjectMocks
-    private TaskServiceImpl taskService;
+	@InjectMocks
+	private TaskServiceImpl taskService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void findById_shouldReturnOptionalTaskDto_whenIdExists() {
-        Long taskId = 1L;
-        TaskDto expectedTaskDto = createSampleTaskDto();
+	@Test
+	void findById_shouldReturnOptionalTaskDto_whenIdExists() {
+		Long taskId = 1L;
+		TaskDto expectedTaskDto = createSampleTaskDto();
 
-        when(taskRepositoryMock.findById(taskId)).thenReturn(Optional.of(createSampleTask()));
-        when(taskMapperMock.toDto(any())).thenReturn(expectedTaskDto);
+		when(taskRepositoryMock.findById(taskId)).thenReturn(Optional.of(createSampleTask()));
+		when(taskMapperMock.toDto(any())).thenReturn(expectedTaskDto);
 
-        Optional<TaskDto> result = taskService.findById(taskId);
+		Optional<TaskDto> result = taskService.findById(taskId);
 
-        assertTrue(result.isPresent());
-        assertEquals(expectedTaskDto, result.get());
+		assertTrue(result.isPresent());
+		assertEquals(expectedTaskDto, result.get());
 
-        verify(taskRepositoryMock, times(1)).findById(taskId);
-        verify(taskMapperMock, times(1)).toDto(any());
-    }
+		verify(taskRepositoryMock, times(1)).findById(taskId);
+		verify(taskMapperMock, times(1)).toDto(any());
+	}
 
-    @Test
-    void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
-        Long nonExistentTaskId = 100L;
+	@Test
+	void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
+		Long nonExistentTaskId = 100L;
 
-        when(taskRepositoryMock.findById(nonExistentTaskId)).thenReturn(Optional.empty());
+		when(taskRepositoryMock.findById(nonExistentTaskId)).thenReturn(Optional.empty());
 
-        Optional<TaskDto> result = taskService.findById(nonExistentTaskId);
+		Optional<TaskDto> result = taskService.findById(nonExistentTaskId);
 
-        assertTrue(result.isEmpty());
+		assertTrue(result.isEmpty());
 
-        verify(taskRepositoryMock, times(1)).findById(nonExistentTaskId);
-        verifyNoInteractions(taskMapperMock);
-    }
+		verify(taskRepositoryMock, times(1)).findById(nonExistentTaskId);
+		verifyNoInteractions(taskMapperMock);
+	}
 
-    @Test
-    void update_shouldInvokeUpdateMethodInRepository() {
-        TaskDto taskDtoToUpdate = createSampleTaskDto();
-        taskService.update(taskDtoToUpdate);
-        verify(taskRepositoryMock, times(1)).update(any());
-    }
+	@Test
+	void update_shouldInvokeUpdateMethodInRepository() {
+		TaskDto taskDtoToUpdate = createSampleTaskDto();
+		taskService.update(taskDtoToUpdate);
+		verify(taskRepositoryMock, times(1)).update(any());
+	}
 
-    @Test
-    void delete_shouldReturnTrue_whenTaskIsDeleted() {
-        Long taskIdToDelete = 1L;
-        when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(true);
-        boolean result = taskService.delete(taskIdToDelete);
-        assertTrue(result);
-        verify(taskRepositoryMock, times(1)).delete(taskIdToDelete);
-    }
+	@Test
+	void delete_shouldReturnTrue_whenTaskIsDeleted() {
+		Long taskIdToDelete = 1L;
+		when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(true);
+		boolean result = taskService.delete(taskIdToDelete);
+		assertTrue(result);
+		verify(taskRepositoryMock, times(1)).delete(taskIdToDelete);
+	}
 
-    @Test
-    void delete_shouldReturnFalse_whenTaskIsNotDeleted() {
-        Long taskIdToDelete = 1L;
+	@Test
+	void delete_shouldReturnFalse_whenTaskIsNotDeleted() {
+		Long taskIdToDelete = 1L;
 
-        when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(false);
+		when(taskRepositoryMock.delete(taskIdToDelete)).thenReturn(false);
 
-        boolean result = taskService.delete(taskIdToDelete);
+		boolean result = taskService.delete(taskIdToDelete);
 
-        assertFalse(result);
+		assertFalse(result);
 
-        verify(taskRepositoryMock, times(1)).delete(taskIdToDelete);
-    }
+		verify(taskRepositoryMock, times(1)).delete(taskIdToDelete);
+	}
 
-    @Test
-    void save_shouldReturnSavedTaskDto() {
-        TaskDto taskDtoToSave = createSampleTaskDto();
+	@Test
+	void save_shouldReturnSavedTaskDto() {
+		TaskDto taskDtoToSave = createSampleTaskDto();
 
-        when(taskRepositoryMock.save(any())).thenReturn(createSampleTask());
-        when(taskMapperMock.toDto(any())).thenReturn(taskDtoToSave);
+		when(taskRepositoryMock.save(any())).thenReturn(createSampleTask());
+		when(taskMapperMock.toDto(any())).thenReturn(taskDtoToSave);
 
-        TaskDto savedTaskDto = taskService.save(taskDtoToSave);
+		TaskDto savedTaskDto = taskService.save(taskDtoToSave);
 
-        assertNotNull(savedTaskDto);
-        assertEquals(taskDtoToSave, savedTaskDto);
+		assertNotNull(savedTaskDto);
+		assertEquals(taskDtoToSave, savedTaskDto);
 
-        verify(taskRepositoryMock, times(1)).save(any());
-        verify(taskMapperMock, times(1)).toDto(any());
-    }
+		verify(taskRepositoryMock, times(1)).save(any());
+		verify(taskMapperMock, times(1)).toDto(any());
+	}
 
-    private Task createSampleTask() {
-        return new Task(1L, "cpp_web_calc", null, 100);
-    }
+	private Task createSampleTask() {
+		return new Task(1L, "cpp_web_calc", null, 100);
+	}
 
-    private TaskDto createSampleTaskDto() {
-        return new TaskDto(1L, "go_calc", null, 100);
-    }
+	private TaskDto createSampleTaskDto() {
+		return new TaskDto(1L, "go_calc", null, 100);
+	}
 }

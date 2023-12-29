@@ -25,107 +25,107 @@ import static org.mockito.Mockito.when;
 
 class PeerServiceImplTest {
 
-    @Mock
-    private PeerRepositoryImpl peerRepositoryMock;
+	@Mock
+	private PeerRepositoryImpl peerRepositoryMock;
 
-    @Mock
-    private PeerMapper peerMapperMock;
+	@Mock
+	private PeerMapper peerMapperMock;
 
-    @InjectMocks
-    private PeerServiceImpl peerService;
+	@InjectMocks
+	private PeerServiceImpl peerService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    void findById_shouldReturnOptionalPeerDto_whenIdExists() {
-        Long peerId = 1L;
-        PeerDto expectedPeerDto = createSamplePeerDto();
+	@Test
+	void findById_shouldReturnOptionalPeerDto_whenIdExists() {
+		Long peerId = 1L;
+		PeerDto expectedPeerDto = createSamplePeerDto();
 
-        when(peerRepositoryMock.findById(peerId)).thenReturn(Optional.of(createSamplePeer()));
-        when(peerMapperMock.toDto(any())).thenReturn(expectedPeerDto);
+		when(peerRepositoryMock.findById(peerId)).thenReturn(Optional.of(createSamplePeer()));
+		when(peerMapperMock.toDto(any())).thenReturn(expectedPeerDto);
 
-        Optional<PeerDto> result = peerService.findById(peerId);
+		Optional<PeerDto> result = peerService.findById(peerId);
 
-        assertTrue(result.isPresent());
-        assertEquals(expectedPeerDto, result.get());
+		assertTrue(result.isPresent());
+		assertEquals(expectedPeerDto, result.get());
 
-        verify(peerRepositoryMock, times(1)).findById(peerId);
-        verify(peerMapperMock, times(1)).toDto(any());
-    }
+		verify(peerRepositoryMock, times(1)).findById(peerId);
+		verify(peerMapperMock, times(1)).toDto(any());
+	}
 
-    @Test
-    void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
-        Long nonExistentPeerId = 100L;
+	@Test
+	void findById_shouldReturnEmptyOptional_whenIdDoesNotExist() {
+		Long nonExistentPeerId = 100L;
 
-        when(peerRepositoryMock.findById(nonExistentPeerId)).thenReturn(Optional.empty());
+		when(peerRepositoryMock.findById(nonExistentPeerId)).thenReturn(Optional.empty());
 
-        Optional<PeerDto> result = peerService.findById(nonExistentPeerId);
+		Optional<PeerDto> result = peerService.findById(nonExistentPeerId);
 
-        assertTrue(result.isEmpty());
+		assertTrue(result.isEmpty());
 
-        verify(peerRepositoryMock, times(1)).findById(nonExistentPeerId);
-        verifyNoInteractions(peerMapperMock);
-    }
+		verify(peerRepositoryMock, times(1)).findById(nonExistentPeerId);
+		verifyNoInteractions(peerMapperMock);
+	}
 
-    @Test
-    void update_shouldInvokeUpdateMethodInRepository() {
-        PeerDto peerDtoToUpdate = createSamplePeerDto();
+	@Test
+	void update_shouldInvokeUpdateMethodInRepository() {
+		PeerDto peerDtoToUpdate = createSamplePeerDto();
 
-        peerService.update(peerDtoToUpdate);
+		peerService.update(peerDtoToUpdate);
 
-        verify(peerRepositoryMock, times(1)).update(any());
-    }
+		verify(peerRepositoryMock, times(1)).update(any());
+	}
 
-    @Test
-    void delete_shouldReturnTrue_whenPeerIsDeleted() {
-        Long peerIdToDelete = 1L;
+	@Test
+	void delete_shouldReturnTrue_whenPeerIsDeleted() {
+		Long peerIdToDelete = 1L;
 
-        when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(true);
+		when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(true);
 
-        boolean result = peerService.delete(peerIdToDelete);
+		boolean result = peerService.delete(peerIdToDelete);
 
-        assertTrue(result);
+		assertTrue(result);
 
-        verify(peerRepositoryMock, times(1)).delete(peerIdToDelete);
-    }
+		verify(peerRepositoryMock, times(1)).delete(peerIdToDelete);
+	}
 
-    @Test
-    void delete_shouldReturnFalse_whenPeerIsNotDeleted() {
-        Long peerIdToDelete = 1L;
+	@Test
+	void delete_shouldReturnFalse_whenPeerIsNotDeleted() {
+		Long peerIdToDelete = 1L;
 
-        when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(false);
+		when(peerRepositoryMock.delete(peerIdToDelete)).thenReturn(false);
 
-        boolean result = peerService.delete(peerIdToDelete);
+		boolean result = peerService.delete(peerIdToDelete);
 
-        assertFalse(result);
+		assertFalse(result);
 
-        verify(peerRepositoryMock, times(1)).delete(peerIdToDelete);
-    }
+		verify(peerRepositoryMock, times(1)).delete(peerIdToDelete);
+	}
 
-    @Test
-    void save_shouldReturnSavedPeerDto() {
-        PeerDto peerDtoToSave = createSamplePeerDto();
+	@Test
+	void save_shouldReturnSavedPeerDto() {
+		PeerDto peerDtoToSave = createSamplePeerDto();
 
-        when(peerRepositoryMock.save(any())).thenReturn(createSamplePeer());
-        when(peerMapperMock.toDto(any())).thenReturn(peerDtoToSave);
+		when(peerRepositoryMock.save(any())).thenReturn(createSamplePeer());
+		when(peerMapperMock.toDto(any())).thenReturn(peerDtoToSave);
 
-        PeerDto savedPeerDto = peerService.save(peerDtoToSave);
+		PeerDto savedPeerDto = peerService.save(peerDtoToSave);
 
-        assertNotNull(savedPeerDto);
-        assertEquals(peerDtoToSave, savedPeerDto);
+		assertNotNull(savedPeerDto);
+		assertEquals(peerDtoToSave, savedPeerDto);
 
-        verify(peerRepositoryMock, times(1)).save(any());
-        verify(peerMapperMock, times(1)).toDto(any());
-    }
+		verify(peerRepositoryMock, times(1)).save(any());
+		verify(peerMapperMock, times(1)).toDto(any());
+	}
 
-    private Peer createSamplePeer() {
-        return new Peer(1L, "peer", LocalDate.now());
-    }
+	private Peer createSamplePeer() {
+		return new Peer(1L, "peer", LocalDate.now());
+	}
 
-    private PeerDto createSamplePeerDto() {
-        return new PeerDto(1L, "peer", LocalDate.now());
-    }
+	private PeerDto createSamplePeerDto() {
+		return new PeerDto(1L, "peer", LocalDate.now());
+	}
 }

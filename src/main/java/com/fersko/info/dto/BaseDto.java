@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class BaseDto {
-    Long id;
+	Long id;
 }
