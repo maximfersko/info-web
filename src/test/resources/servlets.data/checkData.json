@@ -1,0 +1,13 @@
+{
+  "id": 10,
+  "peerDto": {
+    "pkNickname": "lolek",
+    "birthday": "1990-01-01"
+  },
+  "taskDto": {
+    "pkTitle": "CPP_containers",
+    "parentTask": null,
+    "maxXp": 500
+  },
+  "date": "2023-12-01"
+}

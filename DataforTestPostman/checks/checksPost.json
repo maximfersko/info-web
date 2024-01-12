@@ -1,0 +1,28 @@
+{
+  "id": "8",
+  "peerDto": {
+    "id": 2,
+    "pkNickname": "bolek",
+    "birthday": [
+      1995,
+      4,
+      3
+    ]
+  },
+  "taskDto": {
+    "id": 4,
+    "pkTitle": "CPP_matrix",
+    "parentTask": {
+      "id": 1,
+      "pkTitle": "SimpleBashUtils",
+      "parentTask": null,
+      "maxXp": 250
+    },
+    "maxXp": 350
+  },
+  "date": [
+    2022,
+    8,
+    19
+  ]
+}

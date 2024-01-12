@@ -1,0 +1,28 @@
+{
+  "id": 3,
+  "peerDto": {
+    "id": 4,
+    "pkNickname": "poison",
+    "birthday": [
+      1992,
+      1,
+      15
+    ]
+  },
+  "taskDto": {
+    "id": 3,
+    "pkTitle": "LinuxNetwork",
+    "parentTask": {
+      "id": 3,
+      "pkTitle": "SimpleBashUtils",
+      "parentTask": null,
+      "maxXp": 250
+    },
+    "maxXp": 300
+  },
+  "date": [
+    2022,
+    8,
+    19
+  ]
+}
